@@ -1,0 +1,9 @@
+TODO: 1 - light/dark theme usig shadcn
+TODO: 2 - FB messenger integration
+TODO: 3 - Points page
+TODO: 4 - User list page
+TODO: 5 - Reference list page
+TODO: 6 - Points page - update/delete Points
+TODO: 7 - Customer data with graphs
+TODO: 8 - Create a carousel on the home page
+TODO: 9 - About page

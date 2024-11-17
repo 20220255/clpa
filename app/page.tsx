@@ -10,8 +10,8 @@ const HomePage = () => {
     <>
     <section className="pt-7">
         <Title>Snapwash</Title>
-        <Paragraph className="pb-10">Customer Loyalty Points App</Paragraph>
-        <Image src={Logo} alt="snapwash logo"  className="w-2/3 h-2/3 pt-3 m-auto" />
+        <Paragraph className="pb-9">Customer Loyalty Points App</Paragraph>
+        <Image src={Logo} alt="snapwash logo"  className="w-2/3 h-2/3 pt-0.25 m-auto" />
     </section>
 </>
   )

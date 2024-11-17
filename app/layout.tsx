@@ -5,6 +5,8 @@ import "./globals.css";
 import { Roboto } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/navbar/Navbar";
+import BottomNavbar from "@/components/bottomNavbar/BottomNavbar";
+import Providers from "./providers";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
@@ -22,11 +24,14 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" >
         <body className={roboto.className}>
           <div className="container">
-            <Navbar />
-            {children}
+            <Providers>
+              <Navbar />
+              {children}
+              <BottomNavbar />
+            </Providers>
           </div>
         </body>
       </html>
