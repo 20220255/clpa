@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FaHome } from "react-icons/fa"
 import { IoInformationCircle } from "react-icons/io5";
 import { BiSolidWasher } from "react-icons/bi";
-import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
+import { SunIcon } from '@radix-ui/react-icons';
 
 export const BottomNavbarDiv = styled.div`
     position: fixed;
