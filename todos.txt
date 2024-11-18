@@ -1,4 +1,4 @@
-TODO: 1 - light/dark theme usig shadcn
+Done TODO: 1 - light/dark theme usig shadcn
 TODO: 2 - FB messenger integration
 TODO: 3 - Points page
 TODO: 4 - User list page
