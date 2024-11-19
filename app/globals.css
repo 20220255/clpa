@@ -557,7 +557,7 @@ div.circle {
   }
 
   to {
-    background-color: coral;
+    background-color: blue;
     color: white;
   }
 }
@@ -567,7 +567,7 @@ div.circle {
     background-color: lightgray;
   }
   to {
-    background-color: coral;
+    background-color: blue;
     color: white;
   }
   0% {
