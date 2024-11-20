@@ -9,7 +9,7 @@ const Profile = async () => {
     return (
         <div>
             <SignedOut>
-                <Button asChild variant="ghost" size='lg' className=" text-blue-900 flex justify-center items-center relative">
+                <Button asChild variant="ghost" size='lg' className=" dark:text-blue-200 text-blue-900 flex justify-center items-center relative">
                     <div>
                         <FaSignInAlt />
                         <SignInButton />

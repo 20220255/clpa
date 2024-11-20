@@ -47,11 +47,12 @@ h3 {
 }
 
 .container {
-  width: 100%;
+  /* width: 100%; */
   max-width: 960px;
   margin: 0 auto;
   padding: 0 20px;
   text-align: center;
+  align-items: center;
 }
 
 .header {
