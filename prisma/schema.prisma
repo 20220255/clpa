@@ -29,14 +29,15 @@ model User {
 }
 
 model Reference {
-  id        String   @id @default(uuid())
-  refId     String   @unique
-  claimed   Boolean
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  pointIds  Point[]
-  User      User     @relation(fields: [userId], references: [clerkUserId], onDelete: Cascade)
-  userId    String
+  id          String   @id @default(uuid())
+  refId       String   @unique
+  claimed     Boolean
+  claimedDate DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  pointIds    Point[]
+  User        User     @relation(fields: [userId], references: [clerkUserId], onDelete: Cascade)
+  userId      String
 
   @@index([userId])
 }
