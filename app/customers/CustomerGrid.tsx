@@ -15,6 +15,7 @@ const CustomerGrid = ({customers}: {customers: User[]} ) => {
     lastName: customer.lastName,
     email: customer.email,
     createdAt: customer.createdAt,
+    clerkId: customer.clerkUserId
   }));
 
   const columns = [
@@ -25,6 +26,10 @@ const CustomerGrid = ({customers}: {customers: User[]} ) => {
     { field: "createdAt", width: 200, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Date Registered'}</Typography>, },
   ];
 
+  const handleRowClick = (params: any) => {
+    const id = params.row.clerkId;
+    location.href = `/customers/${id}`
+  }
 
   const CustomToolbar = () => {
     return (
@@ -56,6 +61,8 @@ return (
                 },
             }}
             className="dark:text-white dark:bg-blue-900 diplay: flex justify-center"
+            onRowClick={ handleRowClick }
+            
         />
     </Container>
 );
