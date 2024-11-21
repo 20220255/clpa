@@ -26,8 +26,8 @@ const CustomerGrid = ({customers}: {customers: User[]} ) => {
     { field: "createdAt", width: 200, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Date Registered'}</Typography>, },
   ];
 
-  const handleRowClick = (params: any) => {
-    const id = params.row.clerkId;
+  const handleRowClick = async (params: any) => {
+    const id = await params.row.clerkId;
     location.href = `/customers/${id}`
   }
 

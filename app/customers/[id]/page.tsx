@@ -5,7 +5,7 @@ import CustomerRefGrid from "./CustomerRefGrid";
 
 const RefIdsPage = async ({ params }: { params: { id: string } }) => {
 
-    const { id } = params
+    const { id } = await params
 
     const custRefIds = await getCustomerRefIds(id)
 

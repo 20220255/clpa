@@ -19,17 +19,13 @@ const Logo = () => {
         setAnchorEl(null);
     };
 
-    const handleClickCustomer = (event: React.MouseEvent<HTMLElement>) => {
-        <Link href="/customers">Customer</Link>
-    };
-
     return (
         <Button asChild variant={"ghost"} size={null}>
             {/* <Link href="/">
                 <Image src={logo} alt="logo" width={38} className="rounded-full" />
                 </Link> */}
             <div>
-                <Image src={logo} alt="logo" width={38} className="rounded-full" onClick={handleClick} />
+                <Image src={logo} priority={true} alt="logo" width={38} className="rounded-full" onClick={handleClick} />
                 <Menu
                     id="demo-positioned-menu"
                     aria-labelledby="demo-positioned-button"
@@ -45,11 +41,11 @@ const Logo = () => {
                         horizontal: 'left',
                     }}
                 >
-                    <MenuItem>
+                    <MenuItem onClick={handleClose}>
                         <Link href="/customers">Customer</Link>
                         {/* Customers */}
                     </MenuItem>
-                    <MenuItem >
+                    <MenuItem onClick={handleClose} >
                         <Link href="/">Home</Link>
                     </MenuItem>
 
