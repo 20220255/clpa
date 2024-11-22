@@ -21,9 +21,6 @@ const Logo = () => {
 
     return (
         <Button asChild variant={"ghost"} size={null}>
-            {/* <Link href="/">
-                <Image src={logo} alt="logo" width={38} className="rounded-full" />
-                </Link> */}
             <div>
                 <Image src={logo} priority={true} alt="logo" width={38} className="rounded-full" onClick={handleClick} />
                 <Menu

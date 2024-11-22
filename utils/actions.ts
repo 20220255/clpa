@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Reference, User } from "@prisma/client";
+import { Point, Reference, User } from "@prisma/client";
 
 
 // Retrieve all customers
@@ -45,5 +45,18 @@ export const getFirstName = async (userId: string): Promise<{firstName?: string,
         return { error: 'Something went wrong while getting the first name' }  
     }
     
- 
+}
+
+
+// Get points for a reference ID
+export const getRefIdPoints = async (refId: string): Promise<{points?: Point[]}> => {
+    const points = await db.point.findMany({
+        where: {
+            referenceId: refId
+        },
+        orderBy: {
+            createdAt:'desc'
+        }
+    })
+    return {points}
 }
