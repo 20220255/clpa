@@ -5,10 +5,19 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarEx
 import { Avatar, Container, Typography } from "@mui/material";
 import { User } from "@prisma/client";
 
+type RowForm = {
+    id: string;
+    imageUrl: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    email: string;
+    createdAt: Date;
+    clerkId: string
+}
 
 const CustomerGrid = ({customers}: {customers: User[]} ) => {
 
-  const rows = customers.map((customer) => ({
+  const rows = customers.map((customer): RowForm => ({
     id: customer.id,
     imageUrl: customer.imageUrl,
     firstName: customer.firstName,

@@ -4,9 +4,12 @@ import React from "react";
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
 import { Container, Typography } from "@mui/material";
 import { Reference } from "@prisma/client";
+import { useParams } from "next/navigation";
 
 
 const CustomerRefGrid = ({ custRefIds }: { custRefIds: Reference[] }) => {
+
+    const userId = useParams()
 
     const rows = custRefIds.map((refIds) => ({
         id: refIds.id,
@@ -20,6 +23,11 @@ const CustomerRefGrid = ({ custRefIds }: { custRefIds: Reference[] }) => {
         { field: "claimed", width: 150, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Claimed'}</Typography>, },
         { field: "claimedDate", width: 350, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Date Claimed'}</Typography>, },
     ];
+
+    const handleRowClick = async (params: any) => {
+        const refId = await params.row.refId;
+        location.href = `/customers/${userId}/${refId}`
+    }
 
     const CustomToolbar = () => {
         return (
@@ -50,6 +58,7 @@ const CustomerRefGrid = ({ custRefIds }: { custRefIds: Reference[] }) => {
                         paginationModel: { pageSize: 5, page: 0 },
                     },
                 }}
+                onRowClick={handleRowClick}
                 className="dark:text-white dark:bg-blue-900 diplay: flex justify-center"
             />
         </Container>

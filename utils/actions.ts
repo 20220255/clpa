@@ -60,3 +60,16 @@ export const getRefIdPoints = async (refId: string): Promise<{points?: Point[]}>
     })
     return {points}
 }
+
+// Get clerkId based on Reference ID
+export const getClerkId = async (refId: string): Promise<{clerkId?: string | null}> => {
+    const ref = await db.reference.findUnique({
+        where: {
+            refId
+        },
+        select: {
+            userId: true
+        }
+    })
+    return {clerkId: ref?.userId}
+}
