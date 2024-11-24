@@ -1,5 +1,9 @@
+'use server'
+
 import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs/server";
 import { Point, Reference, User } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 
 // Retrieve all customers
@@ -72,4 +76,63 @@ export const getClerkId = async (refId: string): Promise<{clerkId?: string | nul
         }
     })
     return {clerkId: ref?.userId}
+}
+
+interface PointType {
+    // refId: string;
+    // clerkId: string;
+    comment: string;
+    numWash: number;
+    numDry: number;
+    pointsDate: string;
+}
+
+// Add points to a reference ID
+interface TransactionResult {
+    data?: PointType;
+    error?: string;
+}  
+
+export const addPoints = async ({formData, refId, clerkId}: {formData: FormData, refId: string, clerkId: string}): Promise<TransactionResult> => {
+
+    // Get logged in user
+    const {userId} =  await auth()
+
+    // Check for user
+    if (!userId) {
+        return { error: 'User not found' }
+    }
+
+    const comment = formData.get('comment') as string || undefined;
+    const numWash = formData.get('numWash') as string || undefined;
+    const numDry = formData.get('numDry') as string || undefined;
+    const pointsDate = formData.get('pointsDate') as string || undefined;
+    const points = parseInt(formData.get('numDry') as string) + parseInt(formData.get('numWash') as string);
+    
+        if (!refId || !clerkId || !comment || !numWash || !numDry || !pointsDate) {
+        return { error: 'Missing required fields' }
+    }
+
+    try {
+        const pointsAdded: Point = await db.point.create({
+            data: {
+                points,
+                referenceId: refId,
+                userId: clerkId,
+                comment,
+                pointsDate,
+                numWash: parseInt(numWash),
+                numDry: parseInt(numDry),
+            }
+        })
+
+        revalidatePath(`/customers/points/addPoints/${refId}`)
+
+        return {data: pointsAdded}        
+    
+    } catch (error) {
+
+        return { error: 'Error adding transaction' }
+    
+    }
 }

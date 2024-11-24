@@ -7,6 +7,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/navbar/Navbar";
 import BottomNavbar from "@/components/bottomNavbar/BottomNavbar";
 import Providers from "./providers";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
@@ -33,6 +35,7 @@ export default function RootLayout({
               <BottomNavbar />
             </Providers>
           </div>
+          <ToastContainer />
         </body>
       </html>
     </ClerkProvider>

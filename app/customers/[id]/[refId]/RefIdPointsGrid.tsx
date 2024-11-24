@@ -2,11 +2,12 @@
 
 import React from "react";
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
-import { Container, Typography } from "@mui/material";
-import { Point, Reference } from "@prisma/client";
+import { Button, Container, Typography } from "@mui/material";
+import { Point } from "@prisma/client";
+import Link from "next/link";
 
 
-const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints: Point[] | null }) => {
+const RefIdPointsGrid = ({ refIdPoints, refId }: { refIdPoints: Point[] | null, refId: string }) => {
 
     const rows = refIdPoints?.map((points) => ({
         id: points.id,
@@ -23,15 +24,19 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints: Point[] | null }) => {
 
     const CustomToolbar = () => {
         return (
-            <GridToolbarContainer style={{ marginTop: '0.5rem' }}>
-                <div style={{ flexWrap: 'wrap', flexDirection: 'row', display: 'flex', alignContent: 'center', columnGap: '23rem' }}>
-                    <div style={{ margin: 'auto', color: 'inherit' }} >
-                        <GridToolbarColumnsButton slotProps={{ button: { color: 'inherit' } }} />
-                        <GridToolbarFilterButton slotProps={{ button: { color: 'inherit' } }} />
-                        <GridToolbarExport slotProps={{ button: { color: 'inherit' } }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', marginRight: '1rem' }}>
+                <GridToolbarContainer style={{ marginTop: '0.5rem' }}>
+                    <div style={{ flexWrap: 'wrap', flexDirection: 'row', display: 'flex', alignContent: 'center', columnGap: '23rem' }}>
+                        <div style={{ margin: 'auto', color: 'inherit' }} >
+                            <GridToolbarColumnsButton slotProps={{ button: { color: 'inherit' } }} />
+                            <GridToolbarFilterButton slotProps={{ button: { color: 'inherit' } }} />
+                        </div>
                     </div>
-                </div>
-            </GridToolbarContainer>
+                </GridToolbarContainer>
+                <Button variant="contained">
+                    <Link href={`/customers/points/addPoints/${refId}`}>+ Points</Link>
+                </Button>
+            </div>
         )
     }
     return (

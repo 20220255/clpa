@@ -15,7 +15,7 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
             <h1 className="text-2xl font-bold dark:text-blue-200">REF ID: {refId}</h1>
             <BreadCrumbs clerkId={userId || ''} />
             {refIdPoints?.points && (
-                <RefIdPointsGrid refIdPoints={refIdPoints.points} />
+                <RefIdPointsGrid refIdPoints={refIdPoints.points} refId={refId} />
             )}
         </div>
     )

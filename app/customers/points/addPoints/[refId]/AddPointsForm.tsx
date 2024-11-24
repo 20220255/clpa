@@ -1,10 +1,13 @@
 'use client'
 
 import Card from "@/components/shared/card/Card"
-import { Button, InputAdornment, Stack, TextareaAutosize, TextField } from "@mui/material"
-import { Fragment, use, useEffect, useState } from "react"
+import { addPoints, getClerkId } from "@/utils/actions"
+import { Button, InputAdornment, Stack, TextField } from "@mui/material"
+import { redirect } from "next/navigation"
+import { useEffect, useRef, useState } from "react"
+import { toast } from 'react-toastify'
 
-const AddPointsPage = () => {
+const AddPointsForm = ({ refId }: { refId: string }) => {
 
     const [datePoints, setDatePoints] = useState('')
     const [numWash, setNumWash] = useState(0)
@@ -12,21 +15,36 @@ const AddPointsPage = () => {
     const [comment, setComment] = useState('')
     const [points, setPoints] = useState(0)
 
+    const formRef = useRef<HTMLFormElement>(null)
+
+
     useEffect(() => {
         setPoints(numWash + numDry)
     }, [numWash, numDry])
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        console.log(datePoints, numWash, numDry, comment)
+    const clientAction = async (formData: FormData) => {
+
+        const clerkId = (await getClerkId(refId))?.clerkId ?? ''
+
+        const { data, error } = await addPoints({ formData, refId, clerkId })
+        if (error) {
+            toast.error(error)
+            return
+        } else {
+            toast.success('Points added!')
+            formRef.current?.reset()
+            redirect(`/customers/${clerkId}/${refId}`)
+        }
     }
 
     return (
         <Card>
             <h1 className="text-2xl font-bold dark:text-blue-200"> {`${points} POINTS`}</h1>
-            <form onSubmit={handleSubmit}  >
+            {/* <form onSubmit={handleSubmit} action={clientAction}  > */}
+            <form ref={formRef} action={clientAction}>
                 <TextField
                     type="date"
+                    name="pointsDate"
                     variant='outlined'
                     onChange={e => setDatePoints(e.target.value)}
                     value={datePoints}
@@ -39,12 +57,12 @@ const AddPointsPage = () => {
                     }}
                     className="dark:bg-slate-300"
                 />
-                <Stack spacing={2} direction="column" sx={{marginBottom: 4, marginTop: 4 }}>
+                <Stack spacing={2} direction="column" sx={{ marginBottom: 4, marginTop: 4 }}>
                     <TextField
                         type="number"
+                        name="numWash"
                         variant='outlined'
-                        color='secondary'
-                        // label="Number of Washes"
+                        color='primary'
                         onChange={e => setNumWash(parseInt((e.target.value)))}
                         value={numWash}
                         fullWidth
@@ -58,20 +76,21 @@ const AddPointsPage = () => {
                     />
                     <TextField
                         type="number"
+                        name="numDry"
                         variant='outlined'
-                        color='secondary'
+                        color='primary'
                         onChange={e => setNumDry(parseInt((e.target.value)))}
                         value={numDry}
                         fullWidth
                         required
                         slotProps={{
                             input: {
-                                startAdornment: 
-                                    <InputAdornment 
+                                startAdornment:
+                                    <InputAdornment
                                         position="start"
                                         className="dark: text-white"
                                     >
-                                        Number of Dries: 
+                                        Number of Dries:
                                     </InputAdornment>,
                             },
                         }}
@@ -84,6 +103,7 @@ const AddPointsPage = () => {
                     maxRows={4}
                     minRows={3}
                     placeholder="Comments"
+                    name="comment"
                     onChange={e => setComment(e.target.value)}
                     value={comment}
                     // color='black'
@@ -96,4 +116,4 @@ const AddPointsPage = () => {
     )
 }
 
-export default AddPointsPage
+export default AddPointsForm

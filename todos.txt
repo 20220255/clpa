@@ -1,5 +1,5 @@
 Done TODO: 1 - light/dark theme usig shadcn
-TODO: Points page - add points
+TODO: Add cancel button in Add Points
 TODO: Points page - update/delete Points
 TODO: Add loading
 TODO: Admin Roles
