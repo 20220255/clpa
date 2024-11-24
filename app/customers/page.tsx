@@ -9,7 +9,7 @@ export default async function DataGridPage() {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold dark:text-blue-200">CUSTOMERS</h1>
+            <h1 className="text-2xl font-bold dark:text-blue-200 mt-4 ">CUSTOMERS</h1>
             {customers && (
                 <CustomerGrid customers={customers} />
             )}
