@@ -48,7 +48,8 @@ model Point {
   pointsDate  String
   numWash     Int
   numDry      Int
-  comment     String
+  comment     String?
+  freeWash    Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   User        User      @relation(fields: [userId], references: [clerkUserId], onDelete: Cascade)

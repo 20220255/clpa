@@ -126,10 +126,11 @@ export const getClerkId = async (refId: string): Promise<GetClerkId> => {
 }
 
 interface PointType {
-    comment: string;
+    comment?: string | null;
     numWash: number;
     numDry: number;
     pointsDate: string;
+    freeWash: boolean;
 }
 
 // Add points to a reference ID
@@ -148,14 +149,23 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
         return { error: 'User not found' }
     }
 
+    const freeWash = formData.get('isFreeWash') as string || undefined;
     const comment = formData.get('comment') as string || undefined;
     const numWash = formData.get('numWash') as string || undefined;
     const numDry = formData.get('numDry') as string || undefined;
     const pointsDate = formData.get('pointsDate') as string || undefined;
     const points = parseInt(formData.get('numDry') as string) + parseInt(formData.get('numWash') as string);
-    
-        if (!refId || !clerkId || !comment || !numWash || !numDry || !pointsDate) {
+
+    if (!refId || !clerkId || !numWash || !numDry || !pointsDate) {
         return { error: 'Missing required fields' }
+    }
+
+    if (points === 0 && freeWash === 'false') {
+        return { error: 'There should 1 or more points added' }
+    }
+
+    if (points !== 0 && freeWash === 'on') {
+        return { error: 'There should not be any points added for free wash' }
     }
 
     try {
@@ -164,10 +174,11 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
                 points,
                 referenceId: refId,
                 userId: clerkId,
-                comment,
+                comment: comment ?? undefined ?? null ?? '',
                 pointsDate,
                 numWash: parseInt(numWash),
                 numDry: parseInt(numDry),
+                freeWash: freeWash === 'on' ? true : false
             }
         })
 
@@ -177,7 +188,7 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
     
     } catch (error) {
 
-        return { error: 'Error adding transaction' }
+        return { error: 'Error adding points' }
     
     }
 }

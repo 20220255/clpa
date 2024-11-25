@@ -13,7 +13,7 @@ const RefIdPointsGrid = ({ refIdPoints, refId }: { refIdPoints: Point[] | null, 
         id: points.id,
         points: points.points,
         pointsDate: points.pointsDate,
-        numWashDry: points.numWash + ' wash ' + points.numDry + ' dry',
+        numWashDry: points.freeWash ? 'Free Wash' :  points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
     }));
 
     const columns = [

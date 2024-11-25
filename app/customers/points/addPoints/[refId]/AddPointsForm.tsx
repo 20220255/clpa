@@ -2,7 +2,7 @@
 
 import Card from "@/components/shared/card/Card"
 import { addPoints, getClerkId } from "@/utils/actions"
-import { Button, InputAdornment, Stack, TextField } from "@mui/material"
+import { Button, FormControlLabel, InputAdornment, Stack, Switch, TextField } from "@mui/material"
 import { redirect, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { toast } from 'react-toastify'
@@ -14,6 +14,7 @@ const AddPointsForm = ({ refId }: { refId: string }) => {
     const [numDry, setNumDry] = useState(0)
     const [comment, setComment] = useState('')
     const [points, setPoints] = useState(0)
+    const [isFreeWash, setIsFreeWash] = useState(false)
 
     const formRef = useRef<HTMLFormElement>(null)
 
@@ -26,10 +27,14 @@ const AddPointsForm = ({ refId }: { refId: string }) => {
     const router = useRouter();
 
     const handleGoBack = () => {
-      router.back();
+        router.back();
     };
 
     const clientAction = async (formData: FormData) => {
+
+        // convert boolean to string
+        const freeWash = isFreeWash.toString();
+        formData.append('isFreeWash', freeWash);
 
         const clerkId = (await getClerkId(refId))?.clerkId ?? ''
 
@@ -46,7 +51,10 @@ const AddPointsForm = ({ refId }: { refId: string }) => {
 
     return (
         <Card>
-            <h1 className="text-2xl font-bold dark:text-blue-200"> {`${points} POINTS`}</h1>
+            {isFreeWash
+                ? <h1 className="text-2xl font-bold dark:text-blue-200">FREE WASH</h1>
+                : <h1 className="text-2xl font-bold dark:text-blue-200"> {`${points} POINTS`}</h1>
+            }
             <form ref={formRef} action={clientAction}>
                 <TextField
                     type="date"
@@ -114,6 +122,17 @@ const AddPointsForm = ({ refId }: { refId: string }) => {
                     value={comment}
                     style={{ width: '100%', marginBottom: 20, border: '1px solid #ccc' }}
                     className="dark:bg-slate-300 "
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={isFreeWash}
+                            onChange={e => setIsFreeWash(e.target.checked)}
+                            name="isFreeWash"
+                        />
+                    }
+                    className="dark:text-white dark:bg-inherit mb-2"
+                    label="Free Wash"
                 />
                 <div className="flex justify-between gap-4">
                     <Button variant="contained" fullWidth color="secondary" onClick={handleGoBack} >Cancel</Button>
