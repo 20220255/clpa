@@ -1,4 +1,7 @@
+TODO: Add toastify to all server action errors
 TODO: Points page - update/delete Points
+TODO: Customer's Points Page
+TODO: Pages allowed for customers only
 TODO: Admin Roles
 TODO: Striped Grid
 TODO: FB messenger integration

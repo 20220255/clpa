@@ -40,7 +40,6 @@ const Logo = () => {
                 >
                     <MenuItem onClick={handleClose}>
                         <Link href="/customers">Customer</Link>
-                        {/* Customers */}
                     </MenuItem>
                     <MenuItem onClick={handleClose} >
                         <Link href="/">Home</Link>
