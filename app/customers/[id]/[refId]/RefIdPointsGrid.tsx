@@ -1,7 +1,7 @@
 'use client'
 
 import React from "react";
-import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarFilterButton } from "@mui/x-data-grid";
 import { Button, Container, Typography } from "@mui/material";
 import { Point } from "@prisma/client";
 import Link from "next/link";
@@ -28,13 +28,12 @@ const RefIdPointsGrid = ({ refIdPoints, refId }: { refIdPoints: Point[] | null, 
                 <GridToolbarContainer style={{ marginTop: '0.5rem' }}>
                     <div style={{ flexWrap: 'wrap', flexDirection: 'row', display: 'flex', alignContent: 'center', columnGap: '23rem' }}>
                         <div style={{ margin: 'auto', color: 'inherit' }} >
-                            <GridToolbarColumnsButton slotProps={{ button: { color: 'inherit' } }} />
                             <GridToolbarFilterButton slotProps={{ button: { color: 'inherit' } }} />
                         </div>
                     </div>
                 </GridToolbarContainer>
-                <Button variant="contained">
-                    <Link href={`/customers/points/addPoints/${refId}`}>+ Points</Link>
+                <Button variant="contained" className="dark:text-white dark:bg-blue-300 mb-2">
+                    <Link href={`/customers/points/addPoints/${refId}`}>Add Points</Link>
                 </Button>
             </div>
         )

@@ -1,8 +1,6 @@
-Done TODO: 1 - light/dark theme usig shadcn
-TODO: Add cancel button in Add Points
 TODO: Points page - update/delete Points
-TODO: Add loading
 TODO: Admin Roles
+TODO: Striped Grid
 TODO: FB messenger integration
 TODO: Customer data with graphs
 TODO: Create a carousel on the home page

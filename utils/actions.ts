@@ -5,30 +5,53 @@ import { auth } from "@clerk/nextjs/server";
 import { Point, Reference, User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
+type GetCustomersResponse = {
+    customers?: User[];
+    error?: string;
+  };
 
 // Retrieve all customers
-export const getCustomers = async (): Promise<{customers?: User[]}> => {
-    const customers = await db.user.findMany({
-        orderBy: {
-            createdAt:'desc'
-        }
-    })
-    return {customers}
+export const getCustomers = async (): Promise<GetCustomersResponse> => {
+
+    try {
+        const customers = await db.user.findMany({
+            orderBy: {
+                createdAt:'desc'
+            }
+        })
+        return {customers}        
+    } catch (error) {
+        return { error: 'Something went wrong while retrieving customer list. PLease try again. ' }  
+    }
+
+
+
 }
 
-// Retrieve customer's Ref IDs
-export const getCustomerRefIds = async (userId: string): Promise<{custRef?: Reference[]}> => {
-    
-    const custRef = await db.reference.findMany({
-        where: {
-            userId
-        },
-        orderBy: {
-            createdAt:'desc'
-        },
 
-    })
-    return {custRef}
+type GetCustomersReFId = {
+    reference?: Reference[];
+    error?: string;
+  };
+// Retrieve customer's Ref IDs
+export const getCustomerRefIds = async (userId: string): Promise<GetCustomersReFId> => {
+    
+    try {
+        const custRef = await db.reference.findMany({
+            where: {
+                userId
+            },
+            orderBy: {
+                createdAt:'desc'
+            },
+    
+        })
+        return {reference: custRef}        
+    } catch (error) {
+        return { error: 'Something went wrong while getting Reference IDs' }  
+    }
+
+
 }           
 
 // Get user's first name
@@ -52,35 +75,57 @@ export const getFirstName = async (userId: string): Promise<{firstName?: string,
 }
 
 
+
+type GetRefIdPoints = {
+    points?: Point[];
+    error?: string;
+  };
 // Get points for a reference ID
-export const getRefIdPoints = async (refId: string): Promise<{points?: Point[]}> => {
-    const points = await db.point.findMany({
-        where: {
-            referenceId: refId
-        },
-        orderBy: {
-            createdAt:'desc'
-        }
-    })
-    return {points}
+export const getRefIdPoints = async (refId: string): Promise<GetRefIdPoints> => {
+    
+    try {
+        const points = await db.point.findMany({
+            where: {
+                referenceId: refId
+            },
+            orderBy: {
+                createdAt:'desc'
+            }
+        })
+        return {points}        
+    } catch (error) {
+        return { error: 'Something went wrong while getting your points' }
+    }
+
 }
 
+
+type GetClerkId = {
+    reference?: Reference[];
+    error?: string;
+    clerkId?: string;
+  };
 // Get clerkId based on Reference ID
-export const getClerkId = async (refId: string): Promise<{clerkId?: string | null}> => {
-    const ref = await db.reference.findUnique({
-        where: {
-            refId
-        },
-        select: {
-            userId: true
-        }
-    })
-    return {clerkId: ref?.userId}
+export const getClerkId = async (refId: string): Promise<GetClerkId> => {
+    
+    try {
+        const ref = await db.reference.findUnique({
+            where: {
+                refId
+            },
+            select: {
+                userId: true
+            }
+        })  
+        return {clerkId: ref?.userId}        
+    } catch (error) {
+        return { error: 'Something went wrong while getting User ID' }
+    }
+    
+
 }
 
 interface PointType {
-    // refId: string;
-    // clerkId: string;
     comment: string;
     numWash: number;
     numDry: number;

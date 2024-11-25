@@ -4,21 +4,21 @@ import Card from "@/components/shared/card/Card"
 import PointsCircles from "./PointsCircles"
 import { Button } from "@/components/ui/button"
 import JSConfetti from "js-confetti"
-import { useRef } from "react"
+import { Suspense, useRef } from "react"
 import animatePoints from "./utils/animatePoints"
 
 
 const PointsPage = (maxPoints = 8) => {
 
   const canvasRef = useRef();
-  const confettiRef = useRef<JSConfetti | null >(null);
+  const confettiRef = useRef<JSConfetti | null>(null);
 
   const handlePointsClaimed = async (points: number): Promise<void> => {
     // limit points to 8
     if (points >= 8) {
       points = 8;
     }
-    
+
     // animate circle points
     await animatePoints(points, maxPoints);
 
@@ -32,7 +32,7 @@ const PointsPage = (maxPoints = 8) => {
     }
   };
 
-  const handleClick = async() => {
+  const handleClick = async () => {
     await handlePointsClaimed(8);
   }
 
@@ -43,7 +43,9 @@ const PointsPage = (maxPoints = 8) => {
           <h5 className="dark:text-gray-100">
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
           </h5>
-          <PointsCircles maxPoints={8} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <PointsCircles maxPoints={8} />
+          </Suspense>
           <Button variant="default" size='lg' className=" bg-blue-300  text-blue-900 flex justify-center items-center relative min-w-full mt-5 hover:bg-blue-400 " onClick={handleClick}>
             Points
           </Button>

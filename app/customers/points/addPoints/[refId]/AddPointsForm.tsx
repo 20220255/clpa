@@ -3,7 +3,7 @@
 import Card from "@/components/shared/card/Card"
 import { addPoints, getClerkId } from "@/utils/actions"
 import { Button, InputAdornment, Stack, TextField } from "@mui/material"
-import { redirect } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { toast } from 'react-toastify'
 
@@ -22,11 +22,18 @@ const AddPointsForm = ({ refId }: { refId: string }) => {
         setPoints(numWash + numDry)
     }, [numWash, numDry])
 
+
+    const router = useRouter();
+
+    const handleGoBack = () => {
+      router.back();
+    };
+
     const clientAction = async (formData: FormData) => {
 
         const clerkId = (await getClerkId(refId))?.clerkId ?? ''
 
-        const { data, error } = await addPoints({ formData, refId, clerkId })
+        const { error } = await addPoints({ formData, refId, clerkId })
         if (error) {
             toast.error(error)
             return
@@ -40,7 +47,6 @@ const AddPointsForm = ({ refId }: { refId: string }) => {
     return (
         <Card>
             <h1 className="text-2xl font-bold dark:text-blue-200"> {`${points} POINTS`}</h1>
-            {/* <form onSubmit={handleSubmit} action={clientAction}  > */}
             <form ref={formRef} action={clientAction}>
                 <TextField
                     type="date"
@@ -106,11 +112,13 @@ const AddPointsForm = ({ refId }: { refId: string }) => {
                     name="comment"
                     onChange={e => setComment(e.target.value)}
                     value={comment}
-                    // color='black'
                     style={{ width: '100%', marginBottom: 20, border: '1px solid #ccc' }}
                     className="dark:bg-slate-300 "
                 />
-                <Button variant="contained" fullWidth color="primary" type="submit">Add Points</Button>
+                <div className="flex justify-between gap-4">
+                    <Button variant="contained" fullWidth color="secondary" onClick={handleGoBack} >Cancel</Button>
+                    <Button variant="contained" fullWidth color="primary" type="submit">Add Points</Button>
+                </div>
             </form>
         </Card>
     )

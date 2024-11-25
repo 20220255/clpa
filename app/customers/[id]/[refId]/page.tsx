@@ -1,6 +1,8 @@
 import { getClerkId, getRefIdPoints } from "@/utils/actions"
 import RefIdPointsGrid from "./RefIdPointsGrid"
 import BreadCrumbs from "./BreadCrumbs"
+import { Suspense } from "react"
+import Spinner from "@/components/shared/Spinner"
 
 
 const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
@@ -14,9 +16,11 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
         <div>
             <h1 className="text-2xl font-bold dark:text-blue-200">REF ID: {refId}</h1>
             <BreadCrumbs clerkId={userId || ''} />
-            {refIdPoints?.points && (
-                <RefIdPointsGrid refIdPoints={refIdPoints.points} refId={refId} />
-            )}
+            <Suspense fallback={<Spinner />}>
+                {refIdPoints?.points && (
+                    <RefIdPointsGrid refIdPoints={refIdPoints.points} refId={refId} />
+                )}
+            </Suspense>
         </div>
     )
 }
