@@ -1,4 +1,4 @@
-// import { checkUser } from "@/lib/checkUser";
+
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
 import { Button } from "../ui/button";
 import { FaSignInAlt } from "react-icons/fa";
@@ -12,7 +12,7 @@ const Profile = async () => {
                 <Button asChild variant="ghost" size='lg' className=" dark:text-blue-200 text-blue-900 flex justify-center items-center relative">
                     <div>
                         <FaSignInAlt />
-                        <SignInButton />
+                        <SignInButton signUpForceRedirectUrl='/generateRefId' />
                     </div>
                 </Button>
             </SignedOut>

@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Point, Reference, User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { nanoid } from "nanoid";
+
 
 type GetCustomersResponse = {
     customers?: User[];
@@ -29,7 +31,7 @@ export const getCustomers = async (): Promise<GetCustomersResponse> => {
 }
 
 
-type GetCustomersReFId = {
+export type GetCustomersReFId = {
     reference?: Reference[];
     error?: string;
   };
@@ -192,3 +194,25 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
     
     }
 }
+
+
+type AddReference = {
+    reference?: Reference;
+    error?: string;
+ };
+// Add reference details to the database
+// export const AddRefId = async (): Promise<AddReference> => {
+//     try {
+//         const ref = await db.reference.create({
+//             data: {
+//                 refId: nanoid(8),
+//                 pointIds: [],
+
+//             }
+//         })
+//         return {reference: ref}        
+//     } catch (error) {
+//         return { error: 'Something went wrong while adding Reference ID' }
+//     }
+// }
+

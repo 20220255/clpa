@@ -5,13 +5,33 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarEx
 import { Container, Typography } from "@mui/material";
 import { Reference } from "@prisma/client";
 import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
+import { GetCustomersReFId } from '@/utils/actions'
 
 
-const CustomerRefGrid = ({ custRefIds }: { custRefIds: Reference[] }) => {
+const CustomerRefGrid = ({ reference, errorFN }: { reference?: GetCustomersReFId, errorFN?: string }) => {
+
+    if (!reference?.reference || reference?.reference.length < 1) {
+        return (
+            <div>
+                <h1 className="mt-28 text-2xl font-bold dark:text-blue-200">No Refernce ID to show.</h1>{" "}
+            </div>
+        )
+    }
+
+    if (reference?.error) {
+        toast.error('Error retrieving Customer Reference ID');
+        return
+    }
+
+    if (!errorFN) {
+        toast.error('Error getting customer name');
+        return
+    }
 
     const userId = useParams()
 
-    const rows = custRefIds.map((refIds) => ({
+    const rows = reference?.reference.map((refIds) => ({
         id: refIds.id,
         refId: refIds.refId,
         claimed: refIds.claimed ? 'Yes' : 'No',

@@ -13,13 +13,11 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
     const userId = clerkId.clerkId
 
     return (
-        <div>
+        <div className="container">
             <h1 className="text-2xl font-bold dark:text-blue-200">REF ID: {refId}</h1>
             <BreadCrumbs clerkId={userId || ''} />
             <Suspense fallback={<Spinner />}>
-                {refIdPoints?.points && (
-                    <RefIdPointsGrid refIdPoints={refIdPoints.points} refId={refId} />
-                )}
+                <RefIdPointsGrid refIdPoints={refIdPoints.points} refId={refId} />
             </Suspense>
         </div>
     )

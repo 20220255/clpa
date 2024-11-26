@@ -1,19 +1,16 @@
 'use client'
 
-import Link from "next/link"
-import { BottomNavbarDiv, BottomNavbarBorder, BottomNavbarButton, HomeIcon, BottomNavBarSpan, InfoIcon, WasherIcon } from "./BottomNavbar.styles"
 import DarkMode from "./DarkMode"
 import NavbarLinks from "./NavbarLinks"
 
 const BottomNavbar = () => {
     return (
-        <BottomNavbarDiv className="dark:bg-blue-900">
-            <BottomNavbarBorder>
+        <div className="dark:bg-blue-900 bottomNavbar">
+            <div className="bottomNavbarBorder">
                 <NavbarLinks />
-                {/* Theme for dark and light mode */}
                 <DarkMode />
-            </BottomNavbarBorder>
-        </BottomNavbarDiv>
+            </div>
+        </div>
     )
 }
 

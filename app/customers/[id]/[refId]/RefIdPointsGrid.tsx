@@ -2,18 +2,31 @@
 
 import React from "react";
 import { DataGrid, GridToolbarContainer, GridToolbarFilterButton } from "@mui/x-data-grid";
-import { Button, Container, Typography } from "@mui/material";
+import { Button, Card, Container, Typography } from "@mui/material";
 import { Point } from "@prisma/client";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 
-const RefIdPointsGrid = ({ refIdPoints, refId }: { refIdPoints: Point[] | null, refId: string }) => {
+
+const RefIdPointsGrid = ({ refIdPoints, refId }: { refIdPoints?: Point[], refId: string }) => {
+
+    if (refIdPoints?.length === 0) {
+        return (
+            <div>
+                <h1 className="mt-28 text-2xl font-bold dark:text-blue-200">No points to show yet.</h1>{" "}
+                <br></br>
+                Visit our shop and avail our laundry services to earn points.
+                Thank you!
+            </div>
+        )
+    }
 
     const rows = refIdPoints?.map((points) => ({
         id: points.id,
         points: points.points,
         pointsDate: points.pointsDate,
-        numWashDry: points.freeWash ? 'Free Wash' :  points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
+        numWashDry: points.freeWash ? 'Free Wash' : points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
     }));
 
     const columns = [
