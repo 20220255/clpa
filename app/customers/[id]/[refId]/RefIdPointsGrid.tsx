@@ -2,10 +2,8 @@
 
 import React from "react";
 import { DataGrid, GridToolbarContainer, GridToolbarFilterButton } from "@mui/x-data-grid";
-import { Button, Card, Container, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { Point } from "@prisma/client";
-import Link from "next/link";
-import { toast } from "react-toastify";
 
 
 
@@ -45,9 +43,6 @@ const RefIdPointsGrid = ({ refIdPoints, refId }: { refIdPoints?: Point[], refId:
                         </div>
                     </div>
                 </GridToolbarContainer>
-                <Button variant="contained" className="dark:text-white dark:bg-blue-300 mb-2">
-                    <Link href={`/customers/points/addPoints/${refId}`}>Add Points</Link>
-                </Button>
             </div>
         )
     }

@@ -201,18 +201,22 @@ type AddReference = {
     error?: string;
  };
 // Add reference details to the database
-// export const AddRefId = async (): Promise<AddReference> => {
-//     try {
-//         const ref = await db.reference.create({
-//             data: {
-//                 refId: nanoid(8),
-//                 pointIds: [],
+export const AddRefId = async (clerkId: string ): Promise<AddReference> => {
+    try {
 
-//             }
-//         })
-//         return {reference: ref}        
-//     } catch (error) {
-//         return { error: 'Something went wrong while adding Reference ID' }
-//     }
-// }
+        const refId = await nanoid(8);
+        console.log('refId: ', refId)
+
+        const ref = await db.reference.create({
+            data: {
+                refId,
+                userId: clerkId,
+            }
+        })
+        return {reference: ref}        
+    } catch (error) {
+        console.log(error)
+        return { error: 'Something went wrong while adding Reference ID' }
+    }
+}
 
