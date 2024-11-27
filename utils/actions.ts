@@ -12,7 +12,10 @@ type GetCustomersResponse = {
     error?: string;
   };
 
-// Retrieve all customers
+/**
+ * Retrieve all customers 
+ * @returns {Promise<GetCustomersResponse>}
+ */
 export const getCustomers = async (): Promise<GetCustomersResponse> => {
 
     try {
@@ -35,7 +38,14 @@ export type GetCustomersReFId = {
     reference?: Reference[];
     error?: string;
   };
-// Retrieve customer's Ref IDs
+
+ 
+/**
+ * Retrieve customer's Ref IDs
+ * @param userId 
+ * @returns {Promise<GetCustomersReFId>}
+ * 
+ */
 export const getCustomerRefIds = async (userId: string): Promise<GetCustomersReFId> => {
     
     try {
@@ -56,7 +66,12 @@ export const getCustomerRefIds = async (userId: string): Promise<GetCustomersReF
 
 }           
 
-// Get user's first name
+/**
+ * Get user's first name
+ * @param userId 
+ * @returns {Promise<{firstName?: string, error?: string}>}
+ * 
+ */
 export const getFirstName = async (userId: string): Promise<{firstName?: string, error?: string}> => {
     
     try {
@@ -82,7 +97,12 @@ type GetRefIdPoints = {
     points?: Point[];
     error?: string;
   };
-// Get points for a reference ID
+
+/**
+ * Get points detailsfor a reference ID
+ * @param refId 
+ * @returns {Promise<GetRefIdPoints>}
+ */ 
 export const getRefIdPoints = async (refId: string): Promise<GetRefIdPoints> => {
     
     try {
@@ -107,7 +127,12 @@ type GetClerkId = {
     error?: string;
     clerkId?: string;
   };
-// Get clerkId based on Reference ID
+ 
+/**
+ * Get clerkId based on Reference ID
+ * @param refId 
+ * @returns {Promise<GetClerkId>}
+ */
 export const getClerkId = async (refId: string): Promise<GetClerkId> => {
     
     try {
@@ -135,12 +160,19 @@ interface PointType {
     freeWash: boolean;
 }
 
-// Add points to a reference ID
+
 interface TransactionResult {
     data?: PointType;
     error?: string;
 }  
 
+/**
+ * Add points to a reference ID
+ * @param formData 
+ * @param refId 
+ * @param clerkId
+ * @returns {Promise<TransactionResult>}
+ */
 export const addPoints = async ({formData, refId, clerkId}: {formData: FormData, refId: string, clerkId: string}): Promise<TransactionResult> => {
 
     // Get logged in user
@@ -200,7 +232,13 @@ type AddReference = {
     reference?: Reference;
     error?: string;
  };
-// Add reference details to the database
+
+ /**
+ * Add reference details to the database
+ * @param clerkId 
+ * @returns {Promise<AddReference>}
+ */ 
+
 export const AddRefId = async (clerkId: string ): Promise<AddReference> => {
     try {
 

@@ -1,7 +1,4 @@
-TODO: Create a function for adding ref id.
-TODO: If a user registered, automatic generation of next ref ID. Need to attach the function to the red id field of the user to automatically generate the ref id.
 TODO: How to authenticate routes
-TODO: Search for Ref ID in the User table, if not found, move to Customer page in GenerateRefId page
 TODO: Once the Claimed button is clicked, automatic generation of next ref ID.
 TODO: Points page - update/delete Points
 TODO: Customer's Points Page

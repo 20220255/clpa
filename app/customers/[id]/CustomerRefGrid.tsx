@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { GetCustomersReFId } from '@/utils/actions'
 
 
-const CustomerRefGrid = ({ reference, errorFN }: { reference?: GetCustomersReFId, errorFN?: string }) => {
+const CustomerRefGrid = ({ reference, errorFN, fName }: { reference?: GetCustomersReFId, errorFN?: string, fName?: string }) => {
 
     if (!reference?.reference || reference?.reference.length < 1) {
         return (
@@ -46,7 +46,7 @@ const CustomerRefGrid = ({ reference, errorFN }: { reference?: GetCustomersReFId
 
     const handleRowClick = async (params: any) => {
         const refId = await params.row.refId;
-        location.href = `/customers/${userId}/${refId}`
+        location.href = `/customers/${userId}/${refId}~${fName}`
     }
 
     const CustomToolbar = () => {
