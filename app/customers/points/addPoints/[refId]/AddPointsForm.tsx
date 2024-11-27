@@ -1,14 +1,15 @@
 'use client'
 
 import Card from "@/components/shared/card/Card"
-import { addPoints, getClerkId } from "@/utils/actions"
+import { addPoints, AddRefId, getClerkId } from "@/utils/actions"
 import { Button, FormControlLabel, InputAdornment, Stack, Switch, TextField } from "@mui/material"
 import { redirect, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { toast } from 'react-toastify'
 
-const AddPointsForm = ({ refId, fName }: { refId: string, fName: string }) => {
+const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: string, totalPoints: string }) => {
 
+    const freeWashPoints = 8
     const [datePoints, setDatePoints] = useState('')
     const [numWash, setNumWash] = useState(0)
     const [numDry, setNumDry] = useState(0)
@@ -32,11 +33,31 @@ const AddPointsForm = ({ refId, fName }: { refId: string, fName: string }) => {
 
     const clientAction = async (formData: FormData) => {
 
+        const currentTotalPoints = parseInt(totalPoints) + points
+
         // convert boolean to string
         const freeWash = isFreeWash.toString();
         formData.append('isFreeWash', freeWash);
 
+        // if freeWash is true, free wash points should be equal to total points
+        const totalPointsNum = parseInt(totalPoints)
+        if ((freeWashPoints !== totalPointsNum && formData.get('isFreeWash') === 'on')) {
+            toast.error(`Customer only has ${totalPointsNum} points. Customer needs to have ${freeWashPoints} points before claiming a free wash`)
+            return
+        }
+
+        // if current total points is greater than freeWashPoints, 
+        if (currentTotalPoints > freeWashPoints && formData.get('isFreeWash') === 'false') {
+            toast.error(`Customer points is over ${freeWashPoints} points.`)
+            return
+        }
+
         const clerkId = (await getClerkId(refId))?.clerkId ?? ''
+
+        // if free wash is validated, add new ref id to the customer
+        if (currentTotalPoints === freeWashPoints && formData.get('isFreeWash') === 'on') {
+            await AddRefId(clerkId)
+        }
 
         const { error } = await addPoints({ formData, refId, clerkId })
         if (error) {
@@ -45,7 +66,7 @@ const AddPointsForm = ({ refId, fName }: { refId: string, fName: string }) => {
         } else {
             toast.success('Points added!')
             formRef.current?.reset()
-            redirect(`/customers/${clerkId}/${refId}~${fName}`)
+            redirect(`/customers/${clerkId}`)
         }
     }
 
@@ -78,9 +99,9 @@ const AddPointsForm = ({ refId, fName }: { refId: string, fName: string }) => {
                         variant='outlined'
                         color='primary'
                         onChange={e => setNumWash(parseInt((e.target.value)))}
-                        value={numWash}
                         fullWidth
                         required
+                        {...isFreeWash ? { value: 0 } : { value: numWash }}
                         slotProps={{
                             input: {
                                 startAdornment: <InputAdornment position="start">Number of Washes: </InputAdornment>,
@@ -94,7 +115,7 @@ const AddPointsForm = ({ refId, fName }: { refId: string, fName: string }) => {
                         variant='outlined'
                         color='primary'
                         onChange={e => setNumDry(parseInt((e.target.value)))}
-                        value={numDry}
+                        {...isFreeWash ? { value: 0 } : { value: numDry }}
                         fullWidth
                         required
                         slotProps={{

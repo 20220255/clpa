@@ -7,7 +7,7 @@ import { Point } from "@prisma/client";
 
 
 
-const RefIdPointsGrid = ({ refIdPoints, refId }: { refIdPoints?: Point[], refId: string }) => {
+const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
 
     if (refIdPoints?.length === 0) {
         return (

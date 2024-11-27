@@ -15,24 +15,30 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
     const fName = _.split(refIdName.refId, '~', 2)[1]
 
     const refIdPoints = await getRefIdPoints(refId)
-    
+
     const clerkId = await getClerkId(refId)
     const userId = clerkId.clerkId
+
+    // Get the total points for the reference ID
+    const totalPoints = refIdPoints.points?.reduce((acc, point) => {
+        return acc + point.points
+    }, 0)
+
 
     return (
         <div className="container">
             <div className="flex flex-row justify-between m-2">
                 <div className="flex flex-col text-left">
-                    <h1 className="text-1xl font-bold dark:text-blue-200">{`NAME: ${fName}`}</h1>
-                    <h1 className="text-2l font-bold dark:text-blue-200">{`REF ID: ${refId}`}</h1>
+                    <h1 className="text-1xl font-bold dark:text-blue-200">{`${fName} - ${refId}`}</h1>
                 </div>
-                <Button variant="contained" size="medium" className=" dark:text-white dark:bg-blue-300 mb-2">
-                    <Link href={`/customers/points/addPoints/${refId}~${fName}`}>Add Points</Link>
+                <h1 className="text-xl font-bold dark:text-blue-200">{`TOTAL POINTS: ${totalPoints}`}</h1>
+                <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
+                    <Link href={`/customers/points/addPoints/${refId}~${fName}~${totalPoints}`}>Add Points</Link>
                 </Button>
             </div>
             <BreadCrumbs clerkId={userId || ''} />
             <Suspense fallback={<Spinner />}>
-                <RefIdPointsGrid refIdPoints={refIdPoints.points} refId={refId} />
+                <RefIdPointsGrid refIdPoints={refIdPoints.points} />
             </Suspense>
 
         </div>
