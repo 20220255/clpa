@@ -13,7 +13,7 @@ const RefIdsPage = async ({ params }: { params: { id: string } }) => {
 
     const firstName = await getFirstName(id)
     const fName = firstName.firstName
-
+    // TODO: Get the total points for customer. Thia is for data gathering
     return (
         <div>
             <h1 className="text-2xl font-bold dark:text-blue-200">{`Name: ${fName}`}</h1>

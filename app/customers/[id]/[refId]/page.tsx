@@ -11,7 +11,7 @@ const _ = require('lodash');
 const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
 
     const refIdName = await params
-
+    const freeWashPoints = 8
     const refId = _.split(refIdName.refId, '~', 2)[0]
     const fName = _.split(refIdName.refId, '~', 2)[1]
 
@@ -25,7 +25,7 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
         return acc + point.points
     }, 0)
 
-    // TODO: If free wash isClaimed, don't show the add points button
+    // If free wash isClaimed, don't show the add points button
     const { isClaimedRef, error } = await isClaimed(refId)
     if (error) {
         alert(error)
@@ -39,12 +39,15 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
                     <h1 className="text-1xl font-bold dark:text-blue-200">{`${fName} - ${refId}`}</h1>
                 </div>
                 <h1 className="text-xl font-bold dark:text-blue-200">{`POINTS: ${totalPoints}`}</h1>
-                {!isClaimedRef && (
+                {(!isClaimedRef && totalPoints! < freeWashPoints) ? (
                     <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
-                        {/* <Link href={`/customers/points/addPoints/${refId}~${fName}`}>Add Points</Link> */}
-                        Add Points
+                        <Link href={`/customers/points/addPoints/${refId}~${fName}`}>Add Points</Link>
                     </Button>
-                )}
+                ) : (totalPoints === freeWashPoints && !isClaimedRef) &&
+                    <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
+                        <Link href={`/claimFreeWash/${refId}`}>Free Wash</Link>
+                    </Button>
+                 }
             </div>
             <BreadCrumbs clerkId={userId || ''} />
             <Suspense fallback={<Spinner />}>

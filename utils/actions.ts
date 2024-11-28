@@ -270,7 +270,6 @@ export const AddRefId = async (clerkId: string ): Promise<AddReference> => {
     try {
 
         const refId = await nanoid(8);
-        console.log('refId: ', refId)
 
         const ref = await db.reference.create({
             data: {

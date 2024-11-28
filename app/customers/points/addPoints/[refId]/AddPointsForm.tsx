@@ -54,23 +54,6 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
 
         const clerkId = (await getClerkId(refId))?.clerkId ?? ''
 
-        // if free wash is validated, add new ref id to the customer and update the prevous ref id to claimed to true
-        if (currentTotalPoints === freeWashPoints && formData.get('isFreeWash') === 'on') {
-
-            const claimedDate = new Date().toLocaleDateString()
-            const { error } = await updateClaimed(refId, claimedDate)
-            if (error) {
-                toast.error(error)
-                return
-            }
-
-            const { addRefError } = await AddRefId(clerkId)
-            if (addRefError) {
-                toast.error(addRefError)
-                return
-            }
-        }
-
         const { error } = await addPoints({ formData, refId, clerkId })
         if (error) {
             toast.error(error)
@@ -81,7 +64,7 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
             redirect(`/customers/${clerkId}`)
         }
     }
-
+    // TODO: Don't allow negative points to be entered on numWash and numDry
     return (
         <Card>
             {isFreeWash
@@ -156,24 +139,10 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                     style={{ width: '100%', marginBottom: 20, border: '1px solid #ccc' }}
                     className="dark:bg-slate-300 "
                 />
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={isFreeWash}
-                            onChange={e => setIsFreeWash(e.target.checked)}
-                            name="isFreeWash"
-                        />
-                    }
-                    className="dark:text-white dark:bg-inherit mb-2"
-                    label="Free Wash"
-                />
                 <div className="flex justify-between gap-4">
-                    {/* TODO: if free wash is claimed or points is greter than or equal to freeWashPoints (8), Add button should be disabled */}
-                    {/* TODO: free wash button should appear if free wash points is reached (8) */}
-                    {/* TODO: Use button component instead of a switch    */}
                     <Button variant="contained" fullWidth color="secondary" onClick={handleGoBack} >Cancel</Button>
                     <Button variant="contained" fullWidth color="primary" type="submit">
-                       {isFreeWash ? 'Claim Free Wash' : 'Add Points'}
+                        Add Points
                     </Button>
                 </div>
             </form>

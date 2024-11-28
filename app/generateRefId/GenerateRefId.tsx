@@ -35,9 +35,6 @@ const BasicModal = (userId: GenerateRefIdProps) => {
     const clerkUserId = userId.userId
 
     const [open, setOpen] = React.useState(true);
-    const handleOpen = () => setOpen(true);
-
-    console.log('user ID: ', userId.userId)
 
     const handleClose = async () => {
 
@@ -46,14 +43,12 @@ const BasicModal = (userId: GenerateRefIdProps) => {
             return
         }
 
-        const { reference, error } = await AddRefId(clerkUserId)
+        const { reference, addRefError } = await AddRefId(clerkUserId)
 
-        if (error) {
-            toast.error(error)
+        if (addRefError) {
+            toast.error(addRefError)
             return
         }
-
-        console.log('reference: ', reference)
 
         setOpen(false)
 
