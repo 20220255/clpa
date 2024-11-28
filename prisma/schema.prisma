@@ -32,7 +32,7 @@ model Reference {
   id          String   @id @default(uuid())
   refId       String   @unique
   claimed     Boolean  @default(false)
-  claimedDate DateTime?
+  claimedDate String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   pointIds    Point[]

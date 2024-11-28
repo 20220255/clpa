@@ -1,7 +1,7 @@
 'use client'
 
 import Card from "@/components/shared/card/Card"
-import { addPoints, AddRefId, getClerkId } from "@/utils/actions"
+import { addPoints, AddRefId, getClerkId, updateClaimed } from "@/utils/actions"
 import { Button, FormControlLabel, InputAdornment, Stack, Switch, TextField } from "@mui/material"
 import { redirect, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
@@ -54,9 +54,21 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
 
         const clerkId = (await getClerkId(refId))?.clerkId ?? ''
 
-        // if free wash is validated, add new ref id to the customer
+        // if free wash is validated, add new ref id to the customer and update the prevous ref id to claimed to true
         if (currentTotalPoints === freeWashPoints && formData.get('isFreeWash') === 'on') {
-            await AddRefId(clerkId)
+            
+            const claimedDate = new Date().toLocaleDateString()
+            const { error } = await updateClaimed(refId, claimedDate)
+            if (error) {
+                toast.error(error)
+                return
+            }
+
+            const {addRefError} = await AddRefId(clerkId)
+            if (addRefError) {
+                toast.error(addRefError)
+                return
+            }
         }
 
         const { error } = await addPoints({ formData, refId, clerkId })

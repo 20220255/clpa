@@ -32,6 +32,8 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
                     <h1 className="text-1xl font-bold dark:text-blue-200">{`${fName} - ${refId}`}</h1>
                 </div>
                 <h1 className="text-xl font-bold dark:text-blue-200">{`TOTAL POINTS: ${totalPoints}`}</h1>
+                {/* TODO: if free wash is claimed or points is greter than or equal to freeWashPoints (8), Add button should be disabled */}
+                {/* TODO: free wash button should appear if free wash points is reached (8) */}
                 <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
                     <Link href={`/customers/points/addPoints/${refId}~${fName}~${totalPoints}`}>Add Points</Link>
                 </Button>

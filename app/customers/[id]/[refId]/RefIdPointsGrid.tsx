@@ -25,12 +25,14 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
         points: points.points,
         pointsDate: points.pointsDate,
         numWashDry: points.freeWash ? 'Free Wash' : points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
+        comments: points.comment
     }));
 
     const columns = [
         { field: "pointsDate", width: 160, renderHeader: () => <Typography sx={{ color: 'darkblue', }}>{'Date Points Received'}</Typography> },
         { field: "points", width: 150, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Points'}</Typography>, },
-        { field: "numWashDry", width: 350, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Details'}</Typography>, },
+        { field: "numWashDry", width: 150, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Details'}</Typography>, },
+        { field: "comments", width: 350, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Comments'}</Typography>, },
     ];
 
     const CustomToolbar = () => {

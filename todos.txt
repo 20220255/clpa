@@ -1,5 +1,5 @@
+TODO: Update Claimed field to true when to ref id that has just been claimed.
 TODO: How to authenticate routes
-TODO: Once the Claimed button is clicked, automatic generation of next ref ID.
 TODO: Points page - update/delete Points
 TODO: Customer's Points Page
 TODO: Replace About page to Ref Details

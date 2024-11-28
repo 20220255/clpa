@@ -230,7 +230,7 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
 
 type AddReference = {
     reference?: Reference;
-    error?: string;
+    addRefError?: string;
  };
 
  /**
@@ -253,8 +253,24 @@ export const AddRefId = async (clerkId: string ): Promise<AddReference> => {
         })
         return {reference: ref}        
     } catch (error) {
-        console.log(error)
-        return { error: 'Something went wrong while adding Reference ID' }
+        return { addRefError: 'Something went wrong while adding Reference ID' }
     }
 }
 
+// Update claimed in Reference table to true
+export const updateClaimed = async (refId: string, claimedDate: string): Promise<{error?: string}> => {
+    try {
+        await db.reference.update({
+            where: {
+                refId
+            },
+            data: {
+                claimed: true,
+                claimedDate
+            }
+        })
+        return {}
+    } catch (error) {
+        return { error: 'Something went wrong while updating Reference ID' }
+    }
+}
