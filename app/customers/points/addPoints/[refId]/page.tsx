@@ -1,3 +1,4 @@
+import { getRefIdPoints } from "@/utils/actions";
 import AddPointsForm from "./AddPointsForm"
 const _ = require('lodash');
 
@@ -7,7 +8,13 @@ const AddPointsPage = async ({ params }: { params: { refId: string } }) => {
 
     const refId = _.split(refIdName.refId, '~', 2)[0]
     const fName = _.split(refIdName.refId, '~', 2)[1]
-    const totalPoints = _.split(refIdName.refId, '~', 3)[2]
+    // const totalPoints = _.split(refIdName.refId, '~', 3)[2]
+
+    // Get total points
+    const {points} = await getRefIdPoints(refId)
+    const totalPoints = points?.reduce((acc, point) => {
+        return acc + point.points
+    }, 0)
 
     return (
         <div>

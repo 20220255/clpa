@@ -1,4 +1,5 @@
-import { getClerkId, getRefIdPoints } from "@/utils/actions"
+
+import { getClerkId, getRefIdPoints, isClaimed } from "@/utils/actions"
 import RefIdPointsGrid from "./RefIdPointsGrid"
 import BreadCrumbs from "./BreadCrumbs"
 import { Suspense } from "react"
@@ -14,29 +15,36 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
     const refId = _.split(refIdName.refId, '~', 2)[0]
     const fName = _.split(refIdName.refId, '~', 2)[1]
 
-    const refIdPoints = await getRefIdPoints(refId)
-
+    // Needed for BreadCrumbs
     const clerkId = await getClerkId(refId)
     const userId = clerkId.clerkId
 
     // Get the total points for the reference ID
+    const refIdPoints = await getRefIdPoints(refId)
     const totalPoints = refIdPoints.points?.reduce((acc, point) => {
         return acc + point.points
     }, 0)
 
+    // TODO: If free wash isClaimed, don't show the add points button
+    const { isClaimedRef, error } = await isClaimed(refId)
+    if (error) {
+        alert(error)
+        return
+    }
 
     return (
         <div className="container">
-            <div className="flex flex-row justify-between m-2">
+            <div className="flex flex-row justify-around gap-8 m-2">
                 <div className="flex flex-col text-left">
                     <h1 className="text-1xl font-bold dark:text-blue-200">{`${fName} - ${refId}`}</h1>
                 </div>
-                <h1 className="text-xl font-bold dark:text-blue-200">{`TOTAL POINTS: ${totalPoints}`}</h1>
-                {/* TODO: if free wash is claimed or points is greter than or equal to freeWashPoints (8), Add button should be disabled */}
-                {/* TODO: free wash button should appear if free wash points is reached (8) */}
-                <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
-                    <Link href={`/customers/points/addPoints/${refId}~${fName}~${totalPoints}`}>Add Points</Link>
-                </Button>
+                <h1 className="text-xl font-bold dark:text-blue-200">{`POINTS: ${totalPoints}`}</h1>
+                {!isClaimedRef && (
+                    <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
+                        {/* <Link href={`/customers/points/addPoints/${refId}~${fName}`}>Add Points</Link> */}
+                        Add Points
+                    </Button>
+                )}
             </div>
             <BreadCrumbs clerkId={userId || ''} />
             <Suspense fallback={<Spinner />}>

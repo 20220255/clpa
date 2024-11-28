@@ -34,11 +34,38 @@ export const getCustomers = async (): Promise<GetCustomersResponse> => {
 }
 
 
+export type IsClaimedResponse = {
+    isClaimedRef?: boolean;
+    error?: string;
+};    
+
+/**
+ * Check if reference ID has been claimed
+ * @param refId 
+ * @returns {boolean}
+ */
+export const isClaimed = async (refId: string): Promise<IsClaimedResponse> => {
+
+    try {
+        const ref = await db.reference.findUnique({
+            where: {
+                refId
+            },
+            select: {
+                claimed: true
+            }
+        })  
+        return {isClaimedRef: ref?.claimed}
+    } catch (error) {
+        return { error: 'Something went wrong while checking if Reference ID has been claimed' };
+    }
+}
+
+
 export type GetCustomersReFId = {
     reference?: Reference[];
     error?: string;
   };
-
  
 /**
  * Retrieve customer's Ref IDs

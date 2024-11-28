@@ -7,7 +7,7 @@ import { redirect, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { toast } from 'react-toastify'
 
-const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: string, totalPoints: string }) => {
+const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: string, totalPoints: number | undefined }) => {
 
     const freeWashPoints = 8
     const [datePoints, setDatePoints] = useState('')
@@ -33,14 +33,14 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
 
     const clientAction = async (formData: FormData) => {
 
-        const currentTotalPoints = parseInt(totalPoints) + points
+        const currentTotalPoints = parseInt(totalPoints!.toString()) + points
 
         // convert boolean to string
         const freeWash = isFreeWash.toString();
         formData.append('isFreeWash', freeWash);
 
         // if freeWash is true, free wash points should be equal to total points
-        const totalPointsNum = parseInt(totalPoints)
+        const totalPointsNum = parseInt(totalPoints!.toString())
         if ((freeWashPoints !== totalPointsNum && formData.get('isFreeWash') === 'on')) {
             toast.error(`Customer only has ${totalPointsNum} points. Customer needs to have ${freeWashPoints} points before claiming a free wash`)
             return
@@ -56,7 +56,7 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
 
         // if free wash is validated, add new ref id to the customer and update the prevous ref id to claimed to true
         if (currentTotalPoints === freeWashPoints && formData.get('isFreeWash') === 'on') {
-            
+
             const claimedDate = new Date().toLocaleDateString()
             const { error } = await updateClaimed(refId, claimedDate)
             if (error) {
@@ -64,7 +64,7 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                 return
             }
 
-            const {addRefError} = await AddRefId(clerkId)
+            const { addRefError } = await AddRefId(clerkId)
             if (addRefError) {
                 toast.error(addRefError)
                 return
@@ -94,7 +94,7 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                     name="pointsDate"
                     variant='outlined'
                     onChange={e => setDatePoints(e.target.value)}
-                    value={datePoints}
+                    value={isFreeWash ? new Date().toISOString().split('T')[0] : datePoints}
                     fullWidth
                     required
                     slotProps={{
@@ -168,8 +168,13 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                     label="Free Wash"
                 />
                 <div className="flex justify-between gap-4">
+                    {/* TODO: if free wash is claimed or points is greter than or equal to freeWashPoints (8), Add button should be disabled */}
+                    {/* TODO: free wash button should appear if free wash points is reached (8) */}
+                    {/* TODO: Use button component instead of a switch    */}
                     <Button variant="contained" fullWidth color="secondary" onClick={handleGoBack} >Cancel</Button>
-                    <Button variant="contained" fullWidth color="primary" type="submit">Add Points</Button>
+                    <Button variant="contained" fullWidth color="primary" type="submit">
+                       {isFreeWash ? 'Claim Free Wash' : 'Add Points'}
+                    </Button>
                 </div>
             </form>
         </Card>

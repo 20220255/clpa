@@ -1,4 +1,3 @@
-TODO: Update Claimed field to true when to ref id that has just been claimed.
 TODO: How to authenticate routes
 TODO: Points page - update/delete Points
 TODO: Customer's Points Page
