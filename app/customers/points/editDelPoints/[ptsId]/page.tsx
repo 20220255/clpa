@@ -1,9 +1,14 @@
 import { getPoint, getRefIdPoints } from "@/utils/actions";
 import EditDelForm from "./EditDelForm"
+import { PageProps } from "@/.next/types/app/page";
 const _ = require('lodash');
 
 
-const EditDelPage = async ({ params }: { params: { ptsId: string } }) => {
+interface EditDelPageProps extends PageProps {
+    params: Awaited<PageProps['params']>;
+  }
+
+const EditDelPage = async ({ params }: EditDelPageProps) => {
 
     const { ptsId } = await params
 
