@@ -6,9 +6,14 @@ import { Suspense } from "react"
 import Spinner from "@/components/shared/Spinner"
 import { Button } from "@mui/material"
 import Link from "next/link"
+import { PageProps } from "@/.next/types/app/page"
 const _ = require('lodash');
 
-const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
+interface RefPointsPageProps extends PageProps {
+    params: Awaited<PageProps['params']>;
+  }
+
+const RefPointsPage = async ({ params }: RefPointsPageProps) => {
 
     const refIdName = await params
     const freeWashPoints = 8
