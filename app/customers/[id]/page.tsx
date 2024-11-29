@@ -3,9 +3,13 @@ import React, { Suspense } from "react";
 import CustomerRefGrid from "./CustomerRefGrid";
 import BreadCrumbs from "./BreadCrumbs";
 import Spinner from "@/components/shared/Spinner";
+import { PageProps } from "@/.next/types/app/page";
 
+interface RefIdsPageProps extends PageProps {
+    params: Awaited<PageProps['params']>;
+  }
 
-const RefIdsPage = async ({ params }: { params: { id: string } }) => {
+const RefIdsPage = async ({ params }: RefIdsPageProps) => {
 
     const { id } = await params
 
