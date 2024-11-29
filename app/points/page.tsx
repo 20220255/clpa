@@ -8,8 +8,9 @@ import { Suspense, useRef } from "react"
 import animatePoints from "./utils/animatePoints"
 
 
-const PointsPage = (maxPoints = 8) => {
+const PointsPage = () => {
 
+  const maxPoints = 8
   const canvasRef = useRef();
   const confettiRef = useRef<JSConfetti | null>(null);
 
