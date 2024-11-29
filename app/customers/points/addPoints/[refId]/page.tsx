@@ -1,8 +1,12 @@
 import { getRefIdPoints } from "@/utils/actions";
 import AddPointsForm from "./AddPointsForm"
+import { PageProps } from "@/.next/types/app/page";
 const _ = require('lodash');
 
-const AddPointsPage = async ({ params }: { params: { refId: string } }) => {
+interface AddPointsPageProps extends PageProps {
+    params: Awaited<PageProps['params']>;
+  }
+const AddPointsPage = async ({ params }: AddPointsPageProps) => {
 
     const refIdName = await params
 
