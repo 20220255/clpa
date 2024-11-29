@@ -300,3 +300,101 @@ export const updateClaimed = async (refId: string, claimedDate: string): Promise
         return { error: 'Something went wrong while updating Reference ID' }
     }
 }
+
+
+export type PointResponse = {
+    pointDetails?: {
+        id: string;
+        comment?: string | null;
+        numWash: number;
+        numDry: number;
+        pointsDate: string;
+        freeWash: boolean;
+        referenceId: string;
+    };
+    error?: string;
+}
+
+/**
+ * Get points details for a point ID
+ * @param pointId 
+ * @returns {Promise<{point?: Point, error?: string}>}
+ */
+export const getPoint = async (pointId: string): Promise<PointResponse> => {
+    try {
+        const pointDetails = await db.point.findUnique({
+            where: {
+                id: pointId
+            },
+            select: {
+                id: true,
+                comment: true,
+                numWash: true,
+                numDry: true,
+                pointsDate: true,
+                freeWash: true,
+                referenceId: true
+            }
+        })
+        return {pointDetails: pointDetails!}
+    } catch (error) {
+        return { error: 'Something went wrong while getting point details' }
+    }
+}
+
+interface UpdatePointResponse {
+    pointDetails?: {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        points: number;
+        pointsDate: string;
+        numWash: number;
+        numDry: number;
+        comment: string | null;
+        freeWash: boolean;
+        referenceId: string;
+    };
+    error?: string;
+}
+
+
+/**
+ * Update points details for a point ID
+ * @param pointId 
+ * @param formData 
+ * @returns {Promise<{point?: Point, error?: string}>}
+ */
+export const updatePoint = async (pointId: string, formData: FormData): Promise<UpdatePointResponse> => {
+    
+    try {
+        const comment = formData.get('comment') as string || undefined;
+        const numWash = formData.get('numWash') as string || undefined;
+        const numDry = formData.get('numDry') as string || undefined;
+        const pointsDate = formData.get('pointsDate') as string || undefined;
+        const freeWash = formData.get('freeWash') as string || undefined;
+        const points = parseInt(formData.get('numDry') as string) + parseInt(formData.get('numWash') as string);
+
+        if (!pointId || !numWash || !numDry || !pointsDate) {
+            return { error: 'Missing required fields' }
+        }
+
+        const pointDetails = await db.point.update({
+            where: {
+                id: pointId
+            },
+            data: {
+                comment: comment ?? undefined ?? null ?? '',
+                numWash: parseInt(numWash),
+                numDry: parseInt(numDry),
+                pointsDate,
+                freeWash: freeWash === 'on' ? true : false,
+                points
+            }
+        })        
+        return {pointDetails: pointDetails}
+    } catch (error) {
+        return { error: 'Something went wrong while updating point details' }
+    }
+}

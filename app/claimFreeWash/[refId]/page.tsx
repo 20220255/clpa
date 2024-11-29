@@ -11,7 +11,7 @@ const _ = require('lodash');
 // const ClaimFreeWashPage = async ({ params }: { params: { refId: string } }): Promise<JSX.Element> => {
 const ClaimFreeWashPage = async ({ params }: { params: { refId: string } }): Promise<JSX.Element> => {
 
-  const refIdName = params
+  const refIdName = await params
   const refId = refIdName.refId
 
   return (

@@ -35,6 +35,12 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
         { field: "comments", width: 350, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Comments'}</Typography>, },
     ];
 
+    const handleRowClick = async (params: any) => {
+        const ptsId = await params.row.id;
+        // location.href = `/customers/points/editDelPoints/${refId}~${fName}`
+        location.href = `/customers/points/editDelPoints/${ptsId}`
+    }
+
     const CustomToolbar = () => {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', marginRight: '1rem' }}>
@@ -55,6 +61,7 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
                 columns={columns}
                 pageSizeOptions={[5, 10, 100]}
                 density='standard'
+                onRowClick={handleRowClick}
                 slots={{
                     toolbar: CustomToolbar,
                 }}
