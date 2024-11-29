@@ -222,7 +222,7 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
     }
 
     if (points === 0 && freeWash === 'false') {
-        return { error: 'There should 1 or more points added' }
+        return { error: 'There should be 1 or more points added' }
     }
 
     if (points !== 0 && freeWash === 'on') {
@@ -397,4 +397,53 @@ export const updatePoint = async (pointId: string, formData: FormData): Promise<
     } catch (error) {
         return { error: 'Something went wrong while updating point details' }
     }
+}
+
+
+/**
+ * Delete points details for a point ID
+ * @param pointId 
+ * @returns {Promise<{point?: Point, error?: string}>}
+ */
+export const deletePoint = async (pointId: string): Promise<{error?: string}> => {
+    try {
+        await db.point.delete({
+            where: {
+                id: pointId
+            }
+        })
+        return {}
+    } catch (error) {
+        return { error: 'Something went wrong while deleting point details' }
+    }
+}
+
+/**
+ * Get first name for a reference ID
+ * @param refId 
+ * @returns {Promise<{firstName?: string, error?: string}>}
+ */
+export const getFName = async (refId: string): Promise<{firstName?: string, error?: string}> => {
+    try {
+        const firstName = await db.reference.findUnique({
+            where: {
+                refId
+            },
+            select: {
+                userId: true
+            }
+        })
+
+        const user = await db.user.findUnique({
+            where: {
+                clerkUserId: firstName!.userId
+            },
+            select: {
+                firstName: true
+            }
+        })
+        return {firstName: user?.firstName ?? undefined}
+    } catch (error) {
+        return { error: 'Something went wrong while getting first name' }   
+    } 
 }

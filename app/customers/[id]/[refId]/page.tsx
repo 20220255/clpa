@@ -1,5 +1,5 @@
 
-import { getClerkId, getRefIdPoints, isClaimed } from "@/utils/actions"
+import { getClerkId, getFName, getRefIdPoints, isClaimed } from "@/utils/actions"
 import RefIdPointsGrid from "./RefIdPointsGrid"
 import BreadCrumbs from "./BreadCrumbs"
 import { Suspense } from "react"
@@ -12,8 +12,10 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
 
     const refIdName = await params
     const freeWashPoints = 8
-    const refId = _.split(refIdName.refId, '~', 2)[0]
-    const fName = _.split(refIdName.refId, '~', 2)[1]
+    const {refId} = refIdName
+
+    // Get first name for a reference ID
+    const {firstName} = await getFName(refId)
 
     // Needed for BreadCrumbs
     const clerkId = await getClerkId(refId)
@@ -36,12 +38,12 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
         <div className="container">
             <div className="flex flex-row justify-around gap-8 m-2">
                 <div className="flex flex-col text-left">
-                    <h1 className="text-1xl font-bold dark:text-blue-200">{`${fName} - ${refId}`}</h1>
+                    <h1 className="text-1xl font-bold dark:text-blue-200">{`${firstName} - ${refId}`}</h1>
                 </div>
                 <h1 className="text-xl font-bold dark:text-blue-200">{`POINTS: ${totalPoints}`}</h1>
                 {(!isClaimedRef && totalPoints! < freeWashPoints) ? (
                     <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
-                        <Link href={`/customers/points/addPoints/${refId}~${fName}`}>Add Points</Link>
+                        <Link href={`/customers/points/addPoints/${refId}~${firstName}`}>Add Points</Link>
                     </Button>
                 ) : (totalPoints === freeWashPoints && !isClaimedRef) &&
                     <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
@@ -53,7 +55,6 @@ const RefPointsPage = async ({ params }: { params: { refId: string } }) => {
             <Suspense fallback={<Spinner />}>
                 <RefIdPointsGrid refIdPoints={refIdPoints.points} />
             </Suspense>
-
         </div>
     )
 }

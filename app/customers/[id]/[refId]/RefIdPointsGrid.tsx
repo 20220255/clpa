@@ -37,7 +37,6 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
 
     const handleRowClick = async (params: any) => {
         const ptsId = await params.row.id;
-        // location.href = `/customers/points/editDelPoints/${refId}~${fName}`
         location.href = `/customers/points/editDelPoints/${ptsId}`
     }
 

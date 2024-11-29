@@ -46,7 +46,7 @@ const CustomerRefGrid = ({ reference, errorFN, fName }: { reference?: GetCustome
 
     const handleRowClick = async (params: any) => {
         const refId = await params.row.refId;
-        location.href = `/customers/${userId}/${refId}~${fName}`
+        location.href = `/customers/${userId}/${refId}`
     }
 
     const CustomToolbar = () => {

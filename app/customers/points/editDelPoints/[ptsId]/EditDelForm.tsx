@@ -1,16 +1,16 @@
 'use client'
 
 import Card from "@/components/shared/card/Card"
-import { getClerkId, PointResponse, updatePoint } from "@/utils/actions"
+import { deletePoint, getClerkId, PointResponse, updatePoint } from "@/utils/actions"
 import { Button, InputAdornment, Stack, TextField } from "@mui/material"
 import { redirect, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 
-const EditDelForm = ({ pointReqDetails, totalPoints}: { pointReqDetails: PointResponse, totalPoints?: number }) => {
+const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointResponse, totalPoints?: number }) => {
 
   const { pointDetails, error } = pointReqDetails
-   
+
 
   if (error) {
     toast.error(error)
@@ -23,8 +23,8 @@ const EditDelForm = ({ pointReqDetails, totalPoints}: { pointReqDetails: PointRe
   const [numDry, setNumDry] = useState(pointDetails?.numDry)
   const [comment, setComment] = useState(pointDetails?.comment)
   const [points, setPoints] = useState(0)
-  const [isFreeWash, setIsFreeWash] = useState(pointDetails?.freeWash)
-  const [refId, setRefId] = useState(pointDetails?.referenceId)
+  const [isFreeWash] = useState(pointDetails?.freeWash)
+  const [refId] = useState(pointDetails?.referenceId)
   const [ptsId] = useState(pointDetails?.id)
 
   const formRef = useRef<HTMLFormElement>(null)
@@ -41,7 +41,7 @@ const EditDelForm = ({ pointReqDetails, totalPoints}: { pointReqDetails: PointRe
 
 
   const clientAction = async (formData: FormData) => {
-    
+
     let currentTotalPoints = parseInt(totalPoints!.toString()) - pointDetails!.numWash - pointDetails!.numDry
     currentTotalPoints += points
 
@@ -57,12 +57,12 @@ const EditDelForm = ({ pointReqDetails, totalPoints}: { pointReqDetails: PointRe
     }
 
     // if current total points is greater than freeWashPoints, 
-    if (currentTotalPoints > freeWashPoints ) {
+    if (currentTotalPoints > freeWashPoints) {
       toast.error(`Customer points is over ${freeWashPoints} points.`)
       return
     }
 
-    const clerkId = (await getClerkId(refId ?? '' ))?.clerkId ?? ''
+    const clerkId = (await getClerkId(refId ?? ''))?.clerkId ?? ''
 
     const { error } = await updatePoint(ptsId ?? '', formData)
     if (error) {
@@ -75,7 +75,17 @@ const EditDelForm = ({ pointReqDetails, totalPoints}: { pointReqDetails: PointRe
     }
   }
 
-
+  const handleDelete = async () => {
+    const { error } = await deletePoint(ptsId ?? '')
+    if (error) {
+      toast.error(error)
+      return
+    } else {
+      const clerkId = (await getClerkId(refId ?? ''))?.clerkId ?? ''
+      toast.success('Points deleted!')
+      redirect(`/customers/${clerkId}/${refId}`)
+    }
+  }
 
   return (
     <Card>
@@ -153,6 +163,7 @@ const EditDelForm = ({ pointReqDetails, totalPoints}: { pointReqDetails: PointRe
         />
         <div className="flex justify-between gap-4">
           <Button variant="contained" fullWidth color="secondary" onClick={handleGoBack} >Cancel</Button>
+          <Button variant="contained" fullWidth color="error" onClick={handleDelete}>Delete</Button>
           <Button variant="contained" fullWidth color="primary" type="submit">
             Update Points
           </Button>
