@@ -452,7 +452,7 @@ export const getFName = async (refId: string): Promise<{firstName?: string, erro
  * Get the user's total points from the latest reference ID
  * @returns {Promise<{points?: number, error?: string}>}
  */
-export const getUserLatestRefPoints = async (): Promise<{points?: number, error?: string}> => {
+export const getUserLatestRefPoints = async (): Promise<{points?: number, error?: string, refId?: string}> => {
     try {
         const {userId} =  await auth()
 
@@ -474,7 +474,7 @@ export const getUserLatestRefPoints = async (): Promise<{points?: number, error?
         })
 
         if (!reference) {
-            return {points: 0}
+            return {error: 'Reference ID not found'}
         }
         const refId = reference.refId
 
@@ -494,4 +494,49 @@ export const getUserLatestRefPoints = async (): Promise<{points?: number, error?
     } catch (error) {
         return { error: 'Something went wrong while getting points' }   
     } 
+}
+
+
+/**
+ * Get the logged in user's latest reference ID and clerk ID
+ * @returns {Promise<{refId?: string, error?: string}>}
+ */
+export const getLatestRefId = async (): Promise<{refId?: string, clerkId?: string,  error?: string}> => {
+    try {
+        const {userId} =  await auth()
+
+        if (!userId) {
+            return {error: 'User not found'}
+        }
+
+        // Get the user's clerk ID
+        const clerkUserId = await db.user.findUnique({
+            where: {
+                clerkUserId: userId
+            },
+            select: {
+                clerkUserId: true
+            }
+        })
+
+        // Get latest reference ID
+        const reference = await db.reference.findFirst({
+            where: {
+                userId
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            select: {
+                refId: true
+            }
+        })
+
+        if (!reference) {
+            return {error: 'Reference ID not found'}
+        }
+        return {refId: reference.refId, clerkId: clerkUserId?.clerkUserId}
+    } catch (error) {
+        return { error: 'Something went wrong while getting reference ID' }
+    }   
 }
