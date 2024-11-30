@@ -18,7 +18,7 @@ const animatePoints = async(points: number, maxPoints = 8) => {
       for (let index = maxPoints; index > points; index--) {
         const element = document.querySelector<HTMLElement>(`#sw00${index}`)
         if (element) {
-          element.style.backgroundColor = "white";
+          element.style.backgroundColor = "lightgray";
         }
       }
 }

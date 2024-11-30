@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import JSConfetti from "js-confetti"
 import { Suspense, useRef } from "react"
 import animatePoints from "./utils/animatePoints"
+import { getUserLatestRefPoints } from "@/utils/actions"
+import { toast } from "react-toastify"
 
 
 const PointsPage = () => {
@@ -34,7 +36,15 @@ const PointsPage = () => {
   };
 
   const handleClick = async () => {
-    await handlePointsClaimed(8);
+
+    const { points, error } = await getUserLatestRefPoints()
+    
+    if (error) {
+      toast.error(error)
+      return
+    }
+
+    await handlePointsClaimed(points ?? 0);
   }
 
   return (

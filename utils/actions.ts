@@ -447,3 +447,51 @@ export const getFName = async (refId: string): Promise<{firstName?: string, erro
         return { error: 'Something went wrong while getting first name' }   
     } 
 }
+
+/**
+ * Get the user's total points from the latest reference ID
+ * @returns {Promise<{points?: number, error?: string}>}
+ */
+export const getUserLatestRefPoints = async (): Promise<{points?: number, error?: string}> => {
+    try {
+        const {userId} =  await auth()
+
+        if (!userId) {
+            return {error: 'User not found'}
+        }
+
+        // Get latest reference ID
+        const reference = await db.reference.findFirst({
+            where: {
+                userId
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            select: {
+                refId: true
+            }
+        })
+
+        if (!reference) {
+            return {points: 0}
+        }
+        const refId = reference.refId
+
+        const points = await db.point.findMany({
+            where: {
+                userId,
+                referenceId: refId
+            },
+            orderBy: {
+                pointsDate: 'desc'
+            },
+            select: {
+                points: true
+            }
+        })
+        return {points: points.reduce((a, b) => a + b.points, 0)}
+    } catch (error) {
+        return { error: 'Something went wrong while getting points' }   
+    } 
+}
