@@ -87,6 +87,7 @@ const PointsPage = () => {
     </h5>
   );
 
+  // TODO: Create a link to the customer's latest Reference ID page
   return (
     <div >
       <Card >

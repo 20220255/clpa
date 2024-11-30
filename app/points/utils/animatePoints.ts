@@ -9,7 +9,7 @@ const animatePoints = async(points: number, maxPoints = 8) => {
         const element = document.querySelector<HTMLElement>(`#sw00${index}`) 
         if (element) {
           element.style.animation = "circle 0.5s ease-in";
-          element.style.backgroundColor = "blue";
+          element.style.backgroundColor = "coral";
           element.style.color = "white";
           await sleep(250);
         }
