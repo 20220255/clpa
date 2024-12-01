@@ -60,6 +60,7 @@ const CustomerGrid = ({ customers, error }: { customers?: User[], error?: string
         )
     }
 
+    // TODO: Add total points column to grid
     return (
         <Container style={{ height: 400, width: '110%', marginLeft: '-5%', }} >
             <DataGrid

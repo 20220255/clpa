@@ -69,7 +69,7 @@ const BasicModal = (userId: GenerateRefIdProps) => {
                             Snapwash Loyalty App
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }} className='dark:text-blue-800 pb-2' >
-                            Welcome to Snapwash Loyalty App Program. Avail our services reularly to earn points and get your free wash.
+                            Welcome to Snapwash Loyalty App Program. Avail our services regularly to earn points and get your free wash.
                         </Typography>
                         <Button type='submit' variant="contained" fullWidth onClick={handleClose}>Continue</Button>
                     </Box>

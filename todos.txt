@@ -1,12 +1,7 @@
-TODO: How to authenticate routes
-TODO: Points page - update/delete Points
-TODO: Customer's Points Page
-TODO: Replace About page to Ref Details
+TODO: How to authenticate routes/Admin access
+TODO: About Page - Snapwash Opening hours
 TODO: Pages allowed for customers only
-TODO: Admin Roles
-TODO: Breadcrumbs will bw shown for customer login
 TODO: Striped Grid
 TODO: FB messenger integration
 TODO: Customer data with graphs
 TODO: Create a carousel on the home page
-TODO: About page
