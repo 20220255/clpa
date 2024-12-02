@@ -120,7 +120,7 @@ const PointsPage = () => {
             <PointsCircles maxPoints={8} />
           </Suspense>
           <div className="dark:text-gray-100">
-            <Link className="underline dark:text-gray-100" href={`/customers/${clerkId}/${refId}`}>{`${refId} `}</Link>
+            <Link className="underline dark:text-gray-100" href={`/points/${refId}`}>{`${refId} `}</Link>
             is your Ref ID. Click or tap the Ref ID to show details of your
             points.
           </div>
