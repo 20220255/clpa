@@ -28,8 +28,9 @@ const ClaimFreeWash = ({ refId }: { refId: string }): JSX.Element => {
             if (addRefError) {
                 toast.error(addRefError)
                 revalidatePath("/points")
+                return
             }
-
+            toast.success('Free Wash Claimed!')
             router.push(`/customers/${clerkId}`)
 
         }
