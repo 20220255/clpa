@@ -139,7 +139,6 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                     style={{ width: '100%', marginBottom: 20, border: '1px solid #ccc' }}
                     className="dark:bg-slate-300 "
                 />
-                {/* TODO: Add toast message when free wash is claimed */}
                 <div className="flex justify-between gap-4">
                     <Button variant="contained" fullWidth color="secondary" onClick={handleGoBack} >Cancel</Button>
                     <Button variant="contained" fullWidth color="primary" type="submit">

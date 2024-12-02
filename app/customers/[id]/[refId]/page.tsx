@@ -38,7 +38,7 @@ const RefPointsPage = async ({ params }: RefPointsPageProps) => {
         alert(error)
         return
     }
-    // TODO: Edit and delete should not be accessible if ref isClaimed
+    // TODO: TBD - Edit and delete should not be accessible if ref isClaimed 
     return (
         <div className="container">
             <div className="flex flex-row justify-around gap-8 m-2">

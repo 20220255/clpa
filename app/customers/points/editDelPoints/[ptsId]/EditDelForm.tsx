@@ -62,8 +62,6 @@ const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointR
       return
     }
 
-    // TODO: Add validation if points is 0
-
     const clerkId = (await getClerkId(refId ?? ''))?.clerkId ?? ''
 
     const { error } = await updatePoint(ptsId ?? '', formData)
