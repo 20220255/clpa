@@ -95,6 +95,7 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                         color='primary'
                         onChange={e => setNumWash(parseInt((e.target.value)))}
                         fullWidth
+                        inputProps={{ min: 0 }}
                         required
                         {...isFreeWash ? { value: 0 } : { value: numWash }}
                         slotProps={{
@@ -109,6 +110,7 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                         name="numDry"
                         variant='outlined'
                         color='primary'
+                        inputProps={{ min: 0 }}
                         onChange={e => setNumDry(parseInt((e.target.value)))}
                         {...isFreeWash ? { value: 0 } : { value: numDry }}
                         fullWidth
