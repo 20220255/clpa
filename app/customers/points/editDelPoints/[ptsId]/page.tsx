@@ -27,7 +27,6 @@ const EditDelPage = async ({ params }: EditDelPageProps) => {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold dark:text-blue-200">{`${ptsId}`}</h1>
             <EditDelForm pointReqDetails={pointsResponse} totalPoints={totalPoints} />
         </div>
     )
