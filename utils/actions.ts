@@ -540,3 +540,35 @@ export const getLatestRefId = async (): Promise<{refId?: string, clerkId?: strin
         return { error: 'Something went wrong while getting reference ID' }
     }   
 }
+
+/**
+ * Is user admin
+ * @returns {Promise<{isAdmin?: boolean, error?: string}>}
+ */
+export const isAdmin = async (): Promise<{isRoleAdmin?: boolean, error?: string}> => {
+    try {
+        const {userId} =  await auth()
+
+        if (!userId) {
+            return {error: 'User not found'}
+        }
+
+        const user = await db.user.findUnique({
+            where: {
+                clerkUserId: userId
+            },
+            select: {
+                clerkUserId: true
+            }
+        })
+
+        if (!user) {
+            return {error: 'User not found'}
+        }
+
+        return {isRoleAdmin: user.clerkUserId === process.env.ADMIN_CLERK_ID || user.clerkUserId === process.env.ADMIN_CLERK_ID2}
+    } catch (error) {
+        return { error: 'Something went wrong while checking if user is admin' }
+    }
+        
+}

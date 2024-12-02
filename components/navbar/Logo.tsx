@@ -7,7 +7,7 @@ import Image from "next/image"
 import { Menu, MenuItem } from "@mui/material"
 import { useState } from "react"
 
-const Logo = () => {
+const Logo = ({ isAdmin }: { isAdmin?: boolean }) => {
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -23,29 +23,31 @@ const Logo = () => {
         <Button asChild variant={"ghost"} size={null}>
             <div>
                 <Image src={logo} priority={true} alt="logo" width={38} className="rounded-full" onClick={handleClick} />
-                <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="demo-positioned-button"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                >
-                    <MenuItem onClick={handleClose}>
-                        <Link href="/customers">Customer</Link>
-                    </MenuItem>
-                    <MenuItem onClick={handleClose} >
-                        <Link href="/">Home</Link>
-                    </MenuItem>
+                {isAdmin &&
+                    <Menu
+                        id="demo-positioned-menu"
+                        aria-labelledby="demo-positioned-button"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <MenuItem onClick={handleClose}>
+                            <Link href="/customers">Customer</Link>
+                        </MenuItem>
+                        <MenuItem onClick={handleClose} >
+                            <Link href="/">Home</Link>
+                        </MenuItem>
 
-                </Menu>
+                    </Menu>
+                }
             </div>
         </Button>
     )
