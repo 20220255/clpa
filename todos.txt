@@ -1,5 +1,4 @@
 TODO: About Page - Snapwash Opening hours
 TODO: Striped Grid
-TODO: FB messenger integration
 TODO: Customer data with graphs
 TODO: Create a carousel on the home page

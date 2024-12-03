@@ -18,11 +18,11 @@ const navbarLinks: NavbarLink[] = [
         href: "/",
         icon: <FaHome className="homeIcon dark:text-blue-200  group-hover:text-gray-600 dark:group-hover:text-blue-500" size='1.5rem' />,
     },
-    {
-        name: "About",
-        href: "/about",
-        icon: <IoInformationCircle className="infoIcon dark:text-blue-200 group-hover:text-gray-600 dark:group-hover:text-blue-500" size='1.5rem' />,
-    },
+    // {
+    //     name: "About",
+    //     href: "/about",
+    //     icon: <IoInformationCircle className="infoIcon dark:text-blue-200 group-hover:text-gray-600 dark:group-hover:text-blue-500" size='1.5rem' />,
+    // },
     {
         name: "Points",
         href: "/points",

@@ -9,6 +9,7 @@ import BottomNavbar from "@/components/bottomNavbar/BottomNavbar";
 import Providers from "./providers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ChatwootWidget from "@/components/chatwoot/ChatwootWidget";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({
               <Navbar />
               {children}
               <BottomNavbar />
+              <ChatwootWidget />
             </Providers>
           </div>
           <ToastContainer />
