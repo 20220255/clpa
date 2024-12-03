@@ -1,12 +1,13 @@
 
 
 const HomePage = () => {
+  // TODO: Convert snapwash logo to WEBP
   return (
     <>
     <section className="pt-7">
         <h1  className="dark:text-blue-200 text-6xl ">Snapwash</h1>
         <p className="dark:text-blue-200 text-2xl ">Customer Loyalty Points App</p>
-        <img src="/snapwashLogo.png" alt="snapwash logo"  className="w-2/3 h-2/3 pt-0.25 m-auto mt-4" />
+        <img src="/snapwashLogo.webp" alt="snapwash logo"  className="w-2/3 h-2/3 pt-0.25 m-auto mt-4" />
     </section>
 </>
   )
