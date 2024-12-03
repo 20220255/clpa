@@ -6,8 +6,14 @@ import { Button } from "../ui/button"
 import Image from "next/image"
 import { Menu, MenuItem } from "@mui/material"
 import { useState } from "react"
+import { toast } from "react-toastify"
 
-const Logo = ({ isAdmin }: { isAdmin?: boolean }) => {
+const Logo = ({ isAdmin, error }: { isAdmin?: boolean, error?: string }) => {
+
+    if (error) {
+        toast.error(error)
+        return null
+    }
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
