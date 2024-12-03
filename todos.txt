@@ -1,6 +1,4 @@
-TODO: How to authenticate routes/Admin access
 TODO: About Page - Snapwash Opening hours
-TODO: Pages allowed for customers only
 TODO: Striped Grid
 TODO: FB messenger integration
 TODO: Customer data with graphs

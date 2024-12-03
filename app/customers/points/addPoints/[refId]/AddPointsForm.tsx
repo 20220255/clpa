@@ -64,7 +64,6 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
             redirect(`/customers/${clerkId}`)
         }
     }
-    // TODO: Don't allow negative points to be entered on numWash and numDry
     return (
         <Card>
             {isFreeWash

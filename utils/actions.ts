@@ -381,7 +381,7 @@ export const updatePoint = async (pointId: string, formData: FormData): Promise<
         }
 
         if (points === 0) {
-            return { error: 'There should be at last 1 point added' }
+            return { error: 'There should be at least 1 point added' }
         }
 
         const pointDetails = await db.point.update({
