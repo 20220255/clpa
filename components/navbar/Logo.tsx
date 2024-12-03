@@ -29,31 +29,38 @@ const Logo = ({ isAdmin, error }: { isAdmin?: boolean, error?: string }) => {
         <Button asChild variant={"ghost"} size={null}>
             <div>
                 <Image src={logo} priority={true} alt="logo" width={38} className="rounded-full" onClick={handleClick} />
-                {isAdmin &&
-                    <Menu
-                        id="demo-positioned-menu"
-                        aria-labelledby="demo-positioned-button"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
-                    >
-                        <MenuItem onClick={handleClose}>
-                            <Link href="/customers">Customer</Link>
-                        </MenuItem>
-                        <MenuItem onClick={handleClose} >
-                            <Link href="/">Home</Link>
-                        </MenuItem>
 
-                    </Menu>
-                }
+                <Menu
+                    id="demo-positioned-menu"
+                    aria-labelledby="demo-positioned-button"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                >
+                    {isAdmin
+                        ?
+                        (<div>
+                            <MenuItem onClick={handleClose}>
+                                <Link href="/customers">Customer</Link>
+                            </MenuItem>
+                            <MenuItem onClick={handleClose} >
+                                <Link href="/">Home</Link>
+                            </MenuItem>
+                        </div>)
+                        :
+                        (<MenuItem onClick={handleClose} >
+                            <Link href="/">Home</Link>
+                        </MenuItem>)
+                    }
+                </Menu>
             </div>
         </Button>
     )
