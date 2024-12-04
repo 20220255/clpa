@@ -54,6 +54,9 @@ const Logo = ({ isAdmin, error }: { isAdmin?: boolean, error?: string }) => {
                             <MenuItem onClick={handleClose} >
                                 <Link href="/">Home</Link>
                             </MenuItem>
+                            <MenuItem onClick={handleClose} >
+                                <Link href="/customers/topCustomers/">Top 25 Customers</Link>
+                            </MenuItem>
                         </div>)
                         :
                         (<MenuItem onClick={handleClose} >
