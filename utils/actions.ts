@@ -19,6 +19,8 @@ type GetCustomersResponse = {
 export const getCustomers = async (): Promise<GetCustomersResponse> => {
 
     try {
+        // add the total points for each customer or user
+
         const customers = await db.user.findMany({
             orderBy: {
                 createdAt:'desc'
@@ -28,9 +30,6 @@ export const getCustomers = async (): Promise<GetCustomersResponse> => {
     } catch (error) {
         return { error: 'Something went wrong while retrieving customer list. PLease try again. ' }  
     }
-
-
-
 }
 
 
@@ -567,4 +566,49 @@ export const isAdmin = async (): Promise<{isRoleAdmin?: boolean, error?: string}
         return { error: 'Something went wrong while checking if user is admin' }
     }
         
+}
+
+export type UserTotalPoints = {
+    totalPoints?: User & { totalPoints: number },
+}
+
+type GetCustomersResponseTotalPoints = {
+    customersTotalPoints?: UserTotalPoints [],
+    error?: string
+}
+
+/**
+ * Retrieve all customers with total points
+ * @returns {Promise<GetCustomersResponse>}
+ */
+export const getCustomersTotalPoints = async (): Promise<GetCustomersResponseTotalPoints> => {
+
+    try {
+        // Retrieve all customers
+        const customers = await db.user.findMany({
+            orderBy: {
+                createdAt:'desc'
+            },
+            include: {
+                referenceIds: {
+                    include: {
+                        pointIds: true
+                    }
+                }
+            }
+        })
+
+        const customersTotalPoints = customers.map(customer => ({
+            totalPoints: {
+                ...customer,
+                totalPoints: customer.referenceIds.reduce((acc, reference) => {
+                    return acc + reference.pointIds.reduce((acc, point) => acc + point.points, 0)
+                }, 0)
+            }
+        }))
+
+        return { customersTotalPoints }
+    } catch (error) {
+        return { error: 'Something went wrong while retrieving customer list. Please try again. ' }
+    }
 }

@@ -17,7 +17,6 @@ const RefIdsPage = async ({ params }: RefIdsPageProps) => {
 
     const firstName = await getFirstName(id)
     const fName = firstName.firstName
-    // TODO: Get the total points for customer. This is for data gathering
     return (
         <div>
             <h1 className="text-2xl font-bold dark:text-blue-200">{`Name: ${fName}`}</h1>

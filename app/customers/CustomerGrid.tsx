@@ -5,6 +5,7 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarEx
 import { Avatar, Container, Typography } from "@mui/material";
 import { User } from "@prisma/client";
 import { toast } from "react-toastify";
+import { UserTotalPoints } from "@/utils/actions";
 
 type RowForm = {
     id: string;
@@ -13,24 +14,26 @@ type RowForm = {
     lastName?: string | null;
     email: string;
     createdAt: Date;
-    clerkId: string
+    clerkId: string;
+    totalPoints: number
 }
 
-const CustomerGrid = ({ customers, error }: { customers?: User[], error?: string }) => {
+const CustomerGrid = ({ customersTotalPoints, error }: { customersTotalPoints?: UserTotalPoints[], error?: string }) => {
 
     if (error) {
         toast.error(error);
         return
     }
 
-    const rows = customers?.map((customer): RowForm => ({
-        id: customer.id,
-        imageUrl: customer.imageUrl,
-        firstName: customer.firstName,
-        lastName: customer.lastName,
-        email: customer.email,
-        createdAt: customer.createdAt,
-        clerkId: customer.clerkUserId
+    const rows = customersTotalPoints?.map((customer): RowForm => ({
+        id: customer.totalPoints?.id || '',
+        imageUrl: customer.totalPoints?.imageUrl || "",
+        firstName: customer.totalPoints?.firstName,
+        lastName: customer.totalPoints?.lastName,
+        email: customer.totalPoints?.email || '',
+        createdAt: customer.totalPoints!.createdAt,
+        clerkId: customer.totalPoints?.clerkUserId || '',
+        totalPoints: customer.totalPoints?.totalPoints || 0
     }));
 
     const columns = [
@@ -39,6 +42,7 @@ const CustomerGrid = ({ customers, error }: { customers?: User[], error?: string
         { field: "lastName", width: 150, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Last Name'}</Typography>, },
         { field: "email", width: 250, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Email'}</Typography>, },
         { field: "createdAt", width: 200, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Date Registered'}</Typography>, },
+        { field: "totalPoints", width: 150, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Total Points'}</Typography>, },
     ];
 
     const handleRowClick = async (params: any) => {
@@ -60,7 +64,6 @@ const CustomerGrid = ({ customers, error }: { customers?: User[], error?: string
         )
     }
 
-    // TODO: Add total points column to grid
     return (
         <Container style={{ height: 400, width: '110%', marginLeft: '-5%', }} >
             <DataGrid
