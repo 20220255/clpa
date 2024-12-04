@@ -28,14 +28,8 @@ const TopCustomer = ({ customersTotalPoints, error }: { customersTotalPoints?: U
         totalPoints: customer.totalPoints?.totalPoints,
         Name: customer.totalPoints?.firstName,
     })).sort((a, b) => b.totalPoints! - a.totalPoints!).slice(0, 25);
-
-    console.log('dataset: ', dataset)
-
     const randomColor = () => "#" + Math.floor(Math.random() * 16777215).toString(16);
-
     const datasetArr = dataset?.map((customer) => [customer.Name, customer.totalPoints, randomColor()]);
-    console.log('datasetArr: ', datasetArr)
-
     const data = [
         [
             "Customer",
