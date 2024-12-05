@@ -48,11 +48,11 @@ const Logo = ({ isAdmin, error }: { isAdmin?: boolean, error?: string }) => {
                     {isAdmin
                         ?
                         (<div>
-                            <MenuItem onClick={handleClose}>
-                                <Link href="/customers">Customer</Link>
-                            </MenuItem>
                             <MenuItem onClick={handleClose} >
                                 <Link href="/">Home</Link>
+                            </MenuItem>
+                            <MenuItem onClick={handleClose}>
+                                <Link href="/customers">Customers List</Link>
                             </MenuItem>
                             <MenuItem onClick={handleClose} >
                                 <Link href="/customers/topCustomers/">Top 25 Customers</Link>
