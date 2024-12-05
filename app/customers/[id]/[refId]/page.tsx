@@ -43,7 +43,7 @@ const RefPointsPage = async ({ params }: RefPointsPageProps) => {
         <div className="container">
             <div className="flex flex-row justify-around gap-8 m-2">
                 <div className="flex flex-col text-left">
-                    <h1 className="text-1xl font-bold dark:text-blue-200">{`${firstName} - ${refId}`}</h1>
+                    <h1 className="text-xl font-bold dark:text-blue-200">{`${firstName} - ${refId}`}</h1>
                 </div>
                 <h1 className="text-xl font-bold dark:text-blue-200">{`POINTS: ${totalPoints}`}</h1>
                 {(!isClaimedRef && totalPoints! < freeWashPoints) ? (

@@ -1,4 +1,3 @@
 TODO: About Page - Snapwash Opening hours
 TODO: Striped Grid
-TODO: Customer data with graphs
 TODO: Create a carousel on the home page
