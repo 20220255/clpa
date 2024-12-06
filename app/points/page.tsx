@@ -35,7 +35,7 @@ const PointsPage = () => {
       }
     }
     getUserName();
-  }, []);
+  }, [firstName, userId]);
 
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const PointsPage = () => {
       setClerkId(clerkId || null)
     }
     getRefId()
-  }, [])
+  }, [ refId, clerkId ]);
 
   const handlePointsClaimed = async (points: number): Promise<void> => {
     // limit points to 8
