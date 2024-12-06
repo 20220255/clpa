@@ -71,7 +71,7 @@ const BasicModal = (userId: GenerateRefIdProps) => {
                         <Typography id="modal-modal-description" sx={{ mt: 2 }} className='dark:text-blue-800 pb-2' >
                             Welcome to Snapwash Loyalty App Program. Avail our services regularly to earn points and get your free wash.
                         </Typography>
-                        <Button type='submit' variant="contained" fullWidth onClick={handleClose}>Continue</Button>
+                        <button type='submit' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded fullWidth' onClick={handleClose}>Continue</button>
                     </Box>
                 </Modal>
             </form>
