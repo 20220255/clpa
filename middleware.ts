@@ -12,8 +12,9 @@ export default clerkMiddleware(async (auth, req) => {
   // For admins, add clerkUserId to env
   const isAdmin = (await auth()).userId === process.env.ADMIN_CLERK_ID;
   const isAdmin2 = (await auth()).userId === process.env.ADMIN_CLERK_ID2;
+  const isAdmin3 = (await auth()).userId === process.env.ADMIN_CLERK_ID3;
 
-  if ((!isAdmin && !isAdmin2)  && isAdminRoute(req)) {
+  if ((!isAdmin && !isAdmin2 && !isAdmin3)  && isAdminRoute(req)) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 });
