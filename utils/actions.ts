@@ -561,7 +561,13 @@ export const isAdmin = async (): Promise<{isRoleAdmin?: boolean, error?: string}
             }
         })
 
-        return {isRoleAdmin: user?.clerkUserId === process.env.ADMIN_CLERK_ID || user?.clerkUserId === process.env.ADMIN_CLERK_ID2 || user?.clerkUserId === process.env.ADMIN_CLERK_ID3}
+        return {
+            isRoleAdmin: 
+            user?.clerkUserId === process.env.ADMIN_CLERK_ID || 
+            user?.clerkUserId === process.env.ADMIN_CLERK_ID2 || 
+            user?.clerkUserId === process.env.ADMIN_CLERK_ID3 || 
+            user?.clerkUserId === process.env.ADMIN_CLERK_ID4 
+        }
     } catch (error) {
         return { error: 'Something went wrong while checking if user is admin' }
     }
