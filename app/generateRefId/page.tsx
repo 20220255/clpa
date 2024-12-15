@@ -16,6 +16,9 @@ const ModalPage = async () => {
     if (!userId) {
         redirect('/')
     }
+
+    // Search for Ref ID in the Reference table. If found, move to Home page
+    // This means the user already has a Ref ID and has already signed up
     const {reference}  = await getCustomerRefIds(userId)
     if (reference!.length > 0) {
         redirect('/')
