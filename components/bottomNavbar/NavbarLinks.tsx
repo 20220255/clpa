@@ -4,6 +4,8 @@ import Link from "next/link"
 import { FaHome } from "react-icons/fa";
 import { IoInformationCircle } from "react-icons/io5";
 import { BiSolidWasher } from "react-icons/bi";
+import { IoWalletSharp } from "react-icons/io5";
+
 
 
 interface NavbarLink {
@@ -14,9 +16,10 @@ interface NavbarLink {
 
 const navbarLinks: NavbarLink[] = [
     {
-        name: "Home",
-        href: "/",
-        icon: <FaHome className="homeIcon dark:text-blue-200  group-hover:text-gray-600 dark:group-hover:text-blue-500" size='1.5rem' />,
+        name: "Pay",
+        href: "/eWalletPayment",
+        icon: <IoWalletSharp className="homeIcon dark:text-blue-200  group-hover:text-gray-600 dark:group-hover:text-blue-500" size='1.5rem' />,
+        // icon: <FaHome className="homeIcon dark:text-blue-200  group-hover:text-gray-600 dark:group-hover:text-blue-500" size='1.5rem' />,
     },
     // {
     //     name: "About",
