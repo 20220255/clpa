@@ -16,7 +16,7 @@ export default clerkMiddleware(async (auth, req) => {
   const isAdmin4 = (await auth()).userId === process.env.ADMIN_CLERK_ID4;
   const isAdmin5 = (await auth()).userId === process.env.ADMIN_CLERK_ID5;
 
-  if ((!isAdmin && !isAdmin2 && !isAdmin3)  && isAdminRoute(req)) {
+  if ((!isAdmin && !isAdmin2 && !isAdmin3 && !isAdmin4 && !isAdmin5)  && isAdminRoute(req)) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 });
