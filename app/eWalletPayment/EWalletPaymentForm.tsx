@@ -1,27 +1,4 @@
-import Spinner from "@/components/shared/Spinner"
-import { Suspense } from "react"
-// import EWalletPaymentPage from "./EWalletPaymentForm"
-
-
-
-const EWalletPage = () => {
-  return (
-    <div>
-      <Suspense fallback={<Spinner />}>
-        {/* Ewallet on hold */}
-        {/* <EWalletPaymentPage /> */}
-      </Suspense>
-    </div>
-  )
-}
-
-export default EWalletPage
-
-
-
-
-
-
+// Ewallet on hold
 // 'use client'
 
 // import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
@@ -57,17 +34,19 @@ export default EWalletPage
 //         }
 
 //         // create checkout session api with the amount and clerk id
-//         const response = await createCheckoutSession(amount, clerkId)
-//         alert("hello")
-//         console.log("nasaan na???")
-//         console.log('response Ewallet: ', response)
+//         const {response, checkoutError} = await createCheckoutSession(amount, clerkId)
+
+//         if (checkoutError) {
+//             toast.error(checkoutError)
+//             return
+//         }
 
 //         // gets the checkout url from the response and redirect to the checkout page
-//         const checkout_url = await response.data.attributes.checkout_url
+//         const checkout_url = await response.attributes.checkout_url
         
 //         // save the payment intent id to local storage which will be used to get the payment intent details
 //         // and display it on the success page
-//         localStorage.setItem('payment_intent_id', await response.data.attributes.payment_intent.id)
+//         localStorage.setItem('payment_intent_id', await response.attributes.payment_intent.id)
         
 //         // redirect to the checkout page
 //         window.location.replace(checkout_url)
@@ -75,7 +54,7 @@ export default EWalletPage
 
 //     return (
 //         <Box sx={{ py: 4, px: 2 }}>
-//             <Grid container spacing={0.15} justifyContent="flex-start">
+//             <Grid container spacing={0.15} justifyContent="center">
 //                 <Grid item xs={12} md={6} lg={4}>
 //                     <Card sx={{ p: 2, borderRadius: 2, boxShadow: 2 }} className='dark:bg-blue-900'  >
 //                         <CardContent>
@@ -117,8 +96,9 @@ export default EWalletPage
 //                             <Typography variant="h5" component="h2" gutterBottom className='dark:text-white'>
 //                                 Payment
 //                             </Typography>
-
-//                             <form ref={formRef} action={clientAction}>
+//                             {/* Ewallet on hold */}
+//                             {/* <form ref={formRef} action={clientAction}> */}
+//                             <form>
 //                                 <Grid container spacing={2} marginBottom={1}>
 //                                     <Grid item xs={12}>
 //                                         <TextField

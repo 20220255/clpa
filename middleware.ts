@@ -1,7 +1,10 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/", "/about"]);
+// For paymongo api access, currently on hold
+const isPublicRoute = createRouteMatcher(["/", "/about", "/api(.*)"]);
+// const isPublicRoute = createRouteMatcher(["/", "/about"]);
+// const isAdminRoute = createRouteMatcher(["/customers(.*)", "/api(.*)"]);
 const isAdminRoute = createRouteMatcher(["/customers(.*)"]);
 
 

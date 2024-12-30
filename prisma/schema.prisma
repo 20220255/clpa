@@ -26,6 +26,7 @@ model User {
   updatedAt    DateTime    @updatedAt
   referenceIds Reference[]
   pointIds     Point[]
+  payment      Payment[]
 }
 
 model Reference {
@@ -65,4 +66,26 @@ enum Role {
   USER
   EMPLOYEE
   ADMIN
+}
+
+// Create a table for E-Wallet Payment
+model Payment {
+  id                String   @id @default(uuid())
+  amount            Float
+  email             String?
+  name              String?
+  phone             String?
+  currency          String
+  description       String?
+  fee               Float
+  net_amount        Float
+  payment_intent_id String   @unique
+  type              String
+  status            String
+  createdAt         DateTime @default(now())
+  User              User?    @relation(fields: [userId], references: [clerkUserId])
+  userId            String?
+
+  @@index([payment_intent_id])
+  @@index([userId])
 }

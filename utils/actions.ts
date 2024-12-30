@@ -7,6 +7,48 @@ import { revalidatePath } from "next/cache";
 import { nanoid } from "nanoid";
 
 
+export async function isRoleAdmin (): Promise<{error?: string | null}> {
+
+    const clerkUserId = (await auth()).userId
+
+    if (!clerkUserId) {
+        return { error: 'User not found' }
+    }
+
+    // Check if logged in user is Admin
+    const user = await db.user.findUnique({
+        where: {
+            clerkUserId
+        },
+        select: {
+            role: true
+        }
+    })
+
+    if (user?.role !== 'ADMIN') {
+        return { error: 'User not authorized' }
+    }
+    
+    return {}
+}
+
+
+// Get the clerk id for the logged in user
+export const getClerkIdLoggedIn = async (): Promise<{clerkId?: string, error?: string}> => {
+
+    try {
+        const {userId} =  await auth()
+
+        if (!userId) {
+            return {error: 'User not found'}
+        }
+        return {clerkId: userId}        
+    } catch (error) {
+        return { error: 'Something went wrong while getting clerk ID' }
+    }
+}
+
+
 type GetCustomersResponse = {
     customers?: User[];
     error?: string;
@@ -557,17 +599,18 @@ export const isAdmin = async (): Promise<{isRoleAdmin?: boolean, error?: string}
                 clerkUserId: userId || ''
             },
             select: {
-                clerkUserId: true
+                clerkUserId: true,
+                isAdmin: true
             }
         })
 
         return {
-            isRoleAdmin: 
-            user?.clerkUserId === process.env.ADMIN_CLERK_ID || 
-            user?.clerkUserId === process.env.ADMIN_CLERK_ID2 || 
-            user?.clerkUserId === process.env.ADMIN_CLERK_ID3 || 
-            user?.clerkUserId === process.env.ADMIN_CLERK_ID4 || 
-            user?.clerkUserId === process.env.ADMIN_CLERK_ID5 
+            isRoleAdmin: user?.isAdmin
+            // user?.clerkUserId === process.env.ADMIN_CLERK_ID || 
+            // user?.clerkUserId === process.env.ADMIN_CLERK_ID2 || 
+            // user?.clerkUserId === process.env.ADMIN_CLERK_ID3 || 
+            // user?.clerkUserId === process.env.ADMIN_CLERK_ID4 || 
+            // user?.clerkUserId === process.env.ADMIN_CLERK_ID5 
         }
     } catch (error) {
         return { error: 'Something went wrong while checking if user is admin' }
@@ -617,5 +660,83 @@ export const getCustomersTotalPoints = async (): Promise<GetCustomersResponseTot
         return { customersTotalPoints }
     } catch (error) {
         return { error: 'Something went wrong while retrieving customer list. Please try again. ' }
+    }
+}
+
+
+
+interface PaymentData{
+    amount:           number;
+    email?:            string;
+    name?:              string;
+    phone?:             string;
+    currency:          string;
+    description?:       string;
+    fee:               number;
+    net_amount:        number;
+    payment_intent_id: string;
+    type:              string;
+    status:            string;
+    userId:            string;
+}
+
+interface PaymentResult {
+    data?: PaymentData;
+    error?: string;
+}
+
+async function createPayment ({paymentData}: {paymentData: PaymentData}): Promise<PaymentResult | null> {
+
+    try {
+        const payment = await db.payment.create({
+            data: {
+                amount:           paymentData.amount/100,
+                email:            paymentData.email,
+                name:             paymentData.name,
+                phone:            paymentData.phone,
+                currency:         paymentData.currency,
+                description:      paymentData.description,
+                fee:              paymentData.fee/100,
+                net_amount:       paymentData.net_amount/100,
+                payment_intent_id:paymentData.payment_intent_id,
+                type:             paymentData.type,
+                status:           paymentData.status,
+                userId:           paymentData.userId
+            }
+        })
+        return null
+    } catch (error) {
+        return { error: 'Something went wrong while creating payment: ' + error }      
+    }
+
+
+}
+
+export default createPayment
+
+/**
+ * Get the total number of registered customers
+ * @returns {Promise<{totalCustomers?: number, error?: string}>}
+ */
+
+export const getTotalRegisteredCustomers = async (): Promise<{totalCustomers?: number, error?: string}> => {
+    try {
+
+        // Is logged in user admin
+        const {error} = await isRoleAdmin()
+
+        if (error) {
+            return {error}
+        }
+
+        // get the total number of registered customers where isAdmin is false
+        const totalCustomers = await db.user.count({
+            where: {
+                isAdmin: false
+            }
+        })
+        return {totalCustomers}
+    } catch (error) {
+        return { error: 'Something went wrong while getting the total number of registered customers' }
     }
 }

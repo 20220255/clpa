@@ -6,7 +6,7 @@ const _ = require('lodash');
 
 interface EditDelPageProps extends PageProps {
     params: Awaited<PageProps['params']>;
-  }
+}
 
 const EditDelPage = async ({ params }: EditDelPageProps) => {
 
