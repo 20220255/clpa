@@ -3,6 +3,8 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
 import { Button } from "../ui/button";
 import { FaSignInAlt } from "react-icons/fa";
 import { checkUser } from "@/lib/checkUser";
+import { Suspense } from "react";
+import Spinner from "../shared/Spinner";
 
 const Profile = async () => {
     await checkUser();
@@ -16,9 +18,11 @@ const Profile = async () => {
                     </div>
                 </Button>
             </SignedOut>
-            <SignedIn>
-                <UserButton />
-            </SignedIn>
+            <Suspense fallback={<Spinner />}>
+                <SignedIn>
+                    <UserButton />
+                </SignedIn>
+            </Suspense>
         </div>
     )
 }
