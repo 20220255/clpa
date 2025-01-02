@@ -2,30 +2,21 @@
 
 import { getTotalRegisteredCustomers } from "@/utils/actions"
 import { Button } from "@mui/material"
+import { redirect } from "next/navigation"
+
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
-const RegisteredCustomers = () => {
+const RegisteredCustomers = ( { totalCustomers, error }: { totalCustomers?: number, error?: string } ) => {
 
-  const [registeredCustomers, setRegisteredCustomers] = useState(0)
-
-  // Get total number of registered customers
-  useEffect(() => {
-    const getRegisteredCustomers = async () => {
-      const { totalCustomers, error } = await getTotalRegisteredCustomers()
-      if (error) {
-        toast.error(error)
-        return
-      }
-      setRegisteredCustomers(totalCustomers ?? 0)
-    }
-    getRegisteredCustomers()
-  }, [])
-
+  if (error) {
+    toast.error(error)
+    redirect('/')
+  }
 
   return (
     <div>
-      <Button size="medium" variant="contained" color="primary"> {registeredCustomers} Customers</Button>
+      <Button size="medium" variant="contained" color="primary"> {totalCustomers} Customers</Button>
     </div>
   )
 }
