@@ -24,7 +24,13 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
         id: points.id,
         points: points.points,
         pointsDate: points.pointsDate,
-        numWashDry: points.freeWash ? 'Free Wash' : points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
+        // numWashDry: points.freeWash ? 'Free Wash' : points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
+        // change point system to 1 pt for 1 wash n dry
+        numWashDry: points.freeWash 
+            ? 'Free Wash' 
+            : points.numDry > 0 
+                ? points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash' 
+                : points.numWash + ' wash n dry ' || 'Free Wash',
         comments: points.comment
     }));
 

@@ -4,11 +4,10 @@ import Card from "@/components/shared/card/Card"
 import PointsCircles from "./PointsCircles"
 import { Button } from "@/components/ui/button"
 import JSConfetti from "js-confetti"
-import { Suspense, useEffect, useRef, useState } from "react"
+import { Suspense, useRef, useState } from "react"
 import animatePoints from "./utils/animatePoints"
-import { getFirstName, getLatestRefId, getUserLatestRefPoints } from "@/utils/actions"
+import { getUserLatestRefPoints } from "@/utils/actions"
 import { toast } from "react-toastify"
-import { useAuth } from "@clerk/nextjs"
 import Link from "next/link"
 
 
@@ -27,36 +26,8 @@ const PointsAnimation
         const canvasRef = useRef();
         const confettiRef = useRef<JSConfetti | null>(null);
 
-        // const [firstName, setFirstName] = useState<string | null>(null)
         const [pointsLeft, setPointsLeft] = useState<number | null>(null)
         const [initialRender, setinitialRender] = useState(true);
-        // const [refId, setRefId] = useState<string | null>(null);
-        // const [clerkId, setClerkId] = useState<string | null>(null);
-
-        // useEffect(() => {
-        //     const getUserName = async () => {
-        //         if (userId) {
-        //             const { firstName } = await getFirstName(userId);
-        //             setFirstName(firstName || '');
-        //         }
-        //     }
-        //     getUserName();
-        // }, [firstName, userId]);
-
-
-        // useEffect(() => {
-        //     // Get latest reference ID and clerk ID
-        //     const getRefId = async () => {
-        //         const { refId, clerkId, error } = await getLatestRefId()
-        //         if (error) {
-        //             toast.error(error)
-        //             return
-        //         }
-        //         setRefId(refId || null)
-        //         setClerkId(clerkId || null)
-        //     }
-        //     getRefId()
-        // }, [refId, clerkId]);
 
         const handlePointsClaimed = async (points: number): Promise<void> => {
             // limit points to 8
@@ -140,4 +111,3 @@ const PointsAnimation
     }
 
 export default PointsAnimation
-

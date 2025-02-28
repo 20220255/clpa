@@ -1,8 +1,8 @@
 'use client'
 
 import Card from "@/components/shared/card/Card"
-import { addPoints, AddRefId, getClerkId, updateClaimed } from "@/utils/actions"
-import { Button, FormControlLabel, InputAdornment, Stack, Switch, TextField } from "@mui/material"
+import { addPoints, getClerkId } from "@/utils/actions"
+import { Button, InputAdornment, Stack, TextField } from "@mui/material"
 import { redirect, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { toast } from 'react-toastify'
@@ -99,7 +99,8 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                         {...isFreeWash ? { value: 0 } : { value: numWash }}
                         slotProps={{
                             input: {
-                                startAdornment: <InputAdornment position="start">Number of Washes: </InputAdornment>,
+                                // Change point system to 1 pt for 1 wash n dry
+                                startAdornment: <InputAdornment position="start">Number of Wash & Dry: </InputAdornment>,
                             },
                         }}
                         className="dark:bg-slate-300"
@@ -125,7 +126,8 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
                                     </InputAdornment>,
                             },
                         }}
-                        sx={{ mb: 4 }}
+                        // Hide input field for dry due to changes in point system
+                        sx={{ mb: 4, display: 'none' }}
                         className="dark:bg-slate-300"
                     />
                 </Stack>
