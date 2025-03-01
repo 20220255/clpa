@@ -121,7 +121,7 @@ const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointR
             {...isFreeWash ? { value: 0 } : { value: numWash }}
             slotProps={{
               input: {
-                startAdornment: <InputAdornment position="start">Number of Washes: </InputAdornment>,
+                startAdornment: <InputAdornment position="start">Number of Wash & Dry: </InputAdornment>,
               },
             }}
             className="dark:bg-slate-300"
@@ -146,7 +146,8 @@ const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointR
                   </InputAdornment>,
               },
             }}
-            sx={{ mb: 4 }}
+            // hide dry input due to new point system
+            sx={{ mb: 4, display: 'none' }}
             className="dark:bg-slate-300"
           />
         </Stack>
