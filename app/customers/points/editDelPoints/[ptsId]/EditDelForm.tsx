@@ -11,7 +11,6 @@ const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointR
 
   const { pointDetails, error } = pointReqDetails
 
-
   if (error) {
     toast.error(error)
     return null
@@ -30,15 +29,16 @@ const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointR
   const formRef = useRef<HTMLFormElement>(null)
 
   useEffect(() => {
-    if (!numDry || !numWash) return
-    setPoints(numWash + numDry)
+    // if (!numDry || !numWash) return
+    // removed the line because numDry is hidden and point system has changed
+    if (!numWash) return
+    setPoints(numWash)
   }, [numWash, numDry])
 
   const router = useRouter();
   const handleGoBack = () => {
     router.back();
   };
-
 
   const clientAction = async (formData: FormData) => {
 
