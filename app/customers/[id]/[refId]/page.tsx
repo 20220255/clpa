@@ -48,11 +48,11 @@ const RefPointsPage = async ({ params }: RefPointsPageProps) => {
                 <h1 className="text-xl font-bold dark:text-blue-200">{`POINTS: ${totalPoints}`}</h1>
                 {(!isClaimedRef && totalPoints! < freeWashPoints) ? (
                     <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
-                        <Link href={`/customers/points/addPoints/${refId}~${firstName}`}>Add Points</Link>
+                        <Link style={{color: 'white'}} href={`/customers/points/addPoints/${refId}~${firstName}`}>Add Points</Link>
                     </Button>
                 ) : (totalPoints === freeWashPoints && !isClaimedRef) &&
                     <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
-                        <Link href={`/claimFreeWash/${refId}`}>Free Wash</Link>
+                        <Link style={{color: 'white'}} href={`/claimFreeWash/${refId}`}>Free Wash</Link>
                     </Button>
                  }
             </div>
