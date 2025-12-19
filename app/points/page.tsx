@@ -3,13 +3,19 @@ import { getFirstName, getLatestRefId } from "@/utils/actions"
 import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import PointsClientWrapper from "./PointsClientWrapper";
+import { redirect } from "next/navigation";
 
 const PointsPage = async () => {
 
   const { userId } = await auth();
 
+  // Redirect to home if not authenticated
+  if (!userId) {
+    redirect('/');
+  }
+
   // Get customer first name
-  const { firstName } = await getFirstName(userId!);
+  const { firstName } = await getFirstName(userId);
 
   // Get Clerk ID and latest Reference ID
   const { refId, error: latestRefIdError } = await getLatestRefId();
