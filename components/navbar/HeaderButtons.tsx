@@ -3,7 +3,6 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
 import { FaSignInAlt } from "react-icons/fa"
 import { useState, useEffect } from "react"
-import Spinner from "../shared/Spinner"
 
 const HeaderButtons = () => {
     const [mounted, setMounted] = useState(false)
@@ -13,7 +12,8 @@ const HeaderButtons = () => {
     }, [])
 
     if (!mounted) {
-        return <Spinner />
+        // Render a stable empty div with the same height to avoid layout shift/disappearing
+        return <div className="h-10 w-24"></div>
     }
 
     return (
