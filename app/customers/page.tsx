@@ -7,24 +7,29 @@ import { redirect } from "next/navigation";
 
 export default async function DataGridPage() {
 
-    const { customersTotalPoints, error } = await getCustomersTotalPoints()
-
-    // only admin can view this page
+    // Check admin status first
     const { isRoleAdmin, error: adminError } = await isAdmin();
-    if (adminError) {
-        // go to home page if there is an error
+
+    // Redirect if not admin
+    if (adminError || isRoleAdmin !== true) {
         redirect('/')
     }
 
+    const { customersTotalPoints, error } = await getCustomersTotalPoints()
+
     return (
-        <div>
-            <h1 className="text-2xl font-bold dark:text-blue-200 mt-4 ">CUSTOMERS</h1>
-            <Suspense fallback={<Spinner />}>
-                {/* go to homepage if user is not admn */}
-                {isRoleAdmin ? <CustomerGrid customersTotalPoints={customersTotalPoints} error={error} /> : redirect('/')}
-            </Suspense>
+        <div className="min-h-screen pb-24 bg-gradient-to-br from-blue-50 via-cyan-50 to-indigo-100 dark:from-slate-900 dark:via-blue-950 dark:to-indigo-950">
+            <div className="p-4 sm:p-6 lg:p-8">
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-blue-200 mb-6">
+                    CUSTOMERS
+                </h1>
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden">
+                    <Suspense fallback={<Spinner />}>
+                        <CustomerGrid customersTotalPoints={customersTotalPoints} error={error} />
+                    </Suspense>
+                </div>
+            </div>
         </div>
     )
 }
-
 

@@ -1,27 +1,26 @@
 
-import { getClerkId, getFName, getRefIdPoints, isClaimed } from "@/utils/actions"
+import { getFName, getRefIdPoints, isClaimed } from "@/utils/actions"
 import RefIdPointsGrid from "./RefIdPointsGrid"
 import { Suspense } from "react"
 import Spinner from "@/components/shared/Spinner"
 import { PageProps } from "@/.next/types/app/page"
-const _ = require('lodash');
+
 
 interface RefPointsPageProps extends PageProps {
     params: Awaited<PageProps['params']>;
-  }
+}
 
 const RefPointsPage = async ({ params }: RefPointsPageProps) => {
 
     const refIdName = await params
-    const freeWashPoints = 8
-    const {refId} = refIdName
+    const { refId } = refIdName
 
     // Get first name for a reference ID
-    const {firstName} = await getFName(refId)
+    const { firstName } = await getFName(refId)
 
     // Needed for BreadCrumbs
-    const clerkId = await getClerkId(refId)
-    const userId = clerkId.clerkId
+    // const clerkId = await getClerkId(refId)
+    // const userId = clerkId.clerkId
 
     // Get the total points for the reference ID
     const refIdPoints = await getRefIdPoints(refId)
@@ -30,9 +29,9 @@ const RefPointsPage = async ({ params }: RefPointsPageProps) => {
     }, 0)
 
     // If free wash isClaimed, don't show the add points button
-    const { isClaimedRef, error } = await isClaimed(refId)
+    const { error } = await isClaimed(refId)
     if (error) {
-        alert(error)
+        console.error(error)
         return
     }
     return (

@@ -2,17 +2,10 @@
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { redirect } from 'next/dist/server/api-utils';
-import { Link } from 'lucide-react';
-import { revalidatePath } from 'next/cache';
-import { AddRefId, getClerkId } from '@/utils/actions';
-import { auth } from '@clerk/nextjs/server';
-import { get } from 'http';
+import { AddRefId } from '@/utils/actions';
 import { toast } from 'react-toastify';
-import { ButtonGroupContext } from '@mui/material';
 
 const style = {
     position: 'absolute',
@@ -43,7 +36,7 @@ const BasicModal = (userId: GenerateRefIdProps) => {
             return
         }
 
-        const { reference, addRefError } = await AddRefId(clerkUserId)
+        const { addRefError } = await AddRefId(clerkUserId)
 
         if (addRefError) {
             toast.error(addRefError)

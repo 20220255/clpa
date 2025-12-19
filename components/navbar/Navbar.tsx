@@ -12,13 +12,15 @@ const Navbar = async () => {
     const { totalCustomers, error: totalCustomersError } = await getTotalRegisteredCustomers()
 
     return (
-        <nav className="border-b" >
-            <Container className="flex flex-row sm:place-content-between gap-5 justify-between py-3">
+        <nav className="sticky top-0 z-40 bg-gradient-to-r from-blue-50 via-cyan-50 to-indigo-50 dark:from-slate-900 dark:via-blue-950 dark:to-slate-900 border-b border-slate-200/30 dark:border-slate-700/30">
+            <Container className="flex flex-row sm:place-content-between gap-5 justify-between py-3 px-4">
                 <Logo isAdmin={isRoleAdmin} error={error} />
-                <Suspense fallback={<Spinner />}>
-                    {isRoleAdmin ? <RegisteredCustomers totalCustomers={totalCustomers} error={totalCustomersError} /> : null}
-                    <Profile />
-                </Suspense>
+                <div className="flex items-center gap-3">
+                    <Suspense fallback={<Spinner />}>
+                        {isRoleAdmin ? <RegisteredCustomers totalCustomers={totalCustomers} error={totalCustomersError} /> : null}
+                        <Profile />
+                    </Suspense>
+                </div>
             </Container>
         </nav>
     )

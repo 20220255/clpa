@@ -2,70 +2,98 @@
 
 import Link from "next/link"
 import logo from "../../public/snapLogo.png"
-import { Button } from "../ui/button"
 import Image from "next/image"
-import { Menu, MenuItem } from "@mui/material"
-import { useState } from "react"
-import { toast } from "react-toastify"
+import { useState, useEffect } from "react"
+import { FaUsers, FaTrophy } from "react-icons/fa"
 
 const Logo = ({ isAdmin, error }: { isAdmin?: boolean, error?: string }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [hasMounted, setHasMounted] = useState(false);
 
-    if (error) {
-        toast.error(error)
-        return null
+    useEffect(() => {
+        setHasMounted(true);
+    }, []);
+
+    // Always render the same thing on server and client initially
+    const logoImage = (
+        <Image
+            src={logo}
+            priority={true}
+            alt="Snapwash Logo"
+            width={40}
+            height={40}
+            className="rounded-lg"
+        />
+    );
+
+    // Before hydration, just show the logo as a link
+    if (!hasMounted) {
+        return (
+            <div className="p-1 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-200/50 dark:border-blue-700/30">
+                {logoImage}
+            </div>
+        );
     }
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+    // After hydration - handle error case
+    if (error) {
+        return (
+            <Link href="/" className="p-1 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-200/50 dark:border-blue-700/30">
+                {logoImage}
+            </Link>
+        );
+    }
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    // Non-admin: simple link to home
+    if (isAdmin !== true) {
+        return (
+            <Link
+                href="/"
+                className="p-1 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 hover:from-blue-500/20 hover:to-cyan-500/20 border border-blue-200/50 dark:border-blue-700/30 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/10"
+            >
+                {logoImage}
+            </Link>
+        )
+    }
 
+    // Admin: show dropdown
     return (
-        <Button asChild variant={"ghost"} size={null}>
-            <div>
-                <Image src={logo} priority={true} alt="logo" width={38} className="rounded-full" onClick={handleClick} />
+        <div className="relative">
+            <button
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-1 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 hover:from-blue-500/20 hover:to-cyan-500/20 border border-blue-200/50 dark:border-blue-700/30 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/10"
+            >
+                {logoImage}
+            </button>
 
-                <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="demo-positioned-button"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                >
-                    {isAdmin
-                        ?
-                        (<div>
-                            <MenuItem onClick={handleClose} >
-                                <Link href="/">Home</Link>
-                            </MenuItem>
-                            <MenuItem onClick={handleClose}>
-                                <Link href="/customers">Customers List</Link>
-                            </MenuItem>
-                            <MenuItem onClick={handleClose} >
-                                <Link href="/customers/topCustomers/">Top 25 Customers</Link>
-                            </MenuItem>
-                        </div>)
-                        :
-                        (<MenuItem onClick={handleClose} >
-                            <Link href="/">Home</Link>
-                        </MenuItem>)
-                    }
-                </Menu>
-            </div>
-        </Button>
+            {isOpen && (
+                <>
+                    <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setIsOpen(false)}
+                    />
+                    <div className="absolute left-0 top-full mt-2 z-[100] min-w-[200px] p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl">
+                        <Link
+                            href="/customers"
+                            onClick={() => setIsOpen(false)}
+                            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        >
+                            <FaUsers className="text-blue-500" />
+                            <span className="font-medium text-slate-700 dark:text-slate-200">Customers List</span>
+                        </Link>
+                        <Link
+                            href="/customers/topCustomers"
+                            onClick={() => setIsOpen(false)}
+                            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        >
+                            <FaTrophy className="text-amber-500" />
+                            <span className="font-medium text-slate-700 dark:text-slate-200">Top 25 Customers</span>
+                        </Link>
+                    </div>
+                </>
+            )}
+        </div>
     )
 }
 

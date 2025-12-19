@@ -1,24 +1,38 @@
-import { getCustomersTotalPoints } from "@/utils/actions"
+import { getCustomersTotalPoints, isAdmin } from "@/utils/actions"
 import { Suspense } from "react"
 import TopCustomer from "./TopCustomer"
 import Spinner from "@/components/shared/Spinner"
+import { redirect } from "next/navigation"
 
 
 const TopCustomerPage = async () => {
 
-    // Get the total points for each customer
-    const {customersTotalPoints, error} = await getCustomersTotalPoints()
+  // Check admin status first
+  const { isRoleAdmin, error: adminError } = await isAdmin();
 
+  // Redirect if not admin
+  if (adminError || isRoleAdmin !== true) {
+    redirect('/')
+  }
+
+  // Get the total points for each customer
+  const { customersTotalPoints, error } = await getCustomersTotalPoints()
 
   return (
-    <div>
-        <h1 className="text-1xl font-bold dark:text-blue-200 mt-2 ">TOP 25 CUSTOMERS</h1>
-        <Suspense fallback={<Spinner />}>
+    <div className="min-h-screen pb-24 bg-gradient-to-br from-blue-50 via-cyan-50 to-indigo-100 dark:from-slate-900 dark:via-blue-950 dark:to-indigo-950">
+      <div className="p-4 sm:p-6 lg:p-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-blue-200 mb-6">
+          TOP 25 CUSTOMERS
+        </h1>
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden">
+          <Suspense fallback={<Spinner />}>
             <TopCustomer customersTotalPoints={customersTotalPoints} error={error} />
-        </Suspense>
-      
+          </Suspense>
+        </div>
+      </div>
     </div>
   )
 }
 
 export default TopCustomerPage
+

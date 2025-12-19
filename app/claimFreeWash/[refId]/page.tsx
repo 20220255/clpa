@@ -1,15 +1,12 @@
-
-import { PageProps } from "@/.next/types/app/page";
 import ClaimFreeWash from "./ClaimFreeWash"
 
-interface ClaimFreeWashPageProps extends PageProps {
-  params: Awaited<PageProps['params']>;
+interface ClaimFreeWashPageProps {
+  params: Promise<{ refId: string }>;
 }
 
 const ClaimFreeWashPage = async ({ params }: ClaimFreeWashPageProps): Promise<JSX.Element> => {
 
-  const refIdName = await params
-  const refId = refIdName.refId
+  const { refId } = await params
 
   return (
     <>

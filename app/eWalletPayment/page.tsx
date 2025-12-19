@@ -31,7 +31,7 @@ export default EWalletPage
 // import GrabIcon from '/public/grab_logo.jpeg';
 // import Image from 'next/image';
 // import { getClerkIdLoggedIn } from '@/utils/actions';
-// import { createCheckoutSession } from '@/pages/api/create_checkout_session';
+// import { createCheckoutSession } from '@/utils/paymongo';
 // import { toast } from 'react-toastify';
 
 // const EWalletPaymentPage = () => {

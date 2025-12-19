@@ -1,13 +1,13 @@
 'use client'
 
 import React from "react";
-import { DataGrid, GridToolbarContainer, GridToolbarFilterButton } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarFilterButton, GridRowParams } from "@mui/x-data-grid";
 import { Container, Typography } from "@mui/material";
 import { Point } from "@prisma/client";
 
 
 
-const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
+const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[] }) => {
 
     if (refIdPoints?.length === 0) {
         return (
@@ -26,10 +26,10 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
         pointsDate: points.pointsDate,
         // numWashDry: points.freeWash ? 'Free Wash' : points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
         // change point system to 1 pt for 1 wash n dry
-        numWashDry: points.freeWash 
-            ? 'Free Wash' 
-            : points.numDry > 0 
-                ? points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash' 
+        numWashDry: points.freeWash
+            ? 'Free Wash'
+            : points.numDry > 0
+                ? points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash'
                 : points.numWash + ' wash and dry ' || 'Free Wash',
         comments: points.comment
     }));
@@ -41,7 +41,7 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
         { field: "comments", width: 350, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Comments'}</Typography>, },
     ];
 
-    const handleRowClick = async (params: any) => {
+    const handleRowClick = async (params: GridRowParams) => {
         const ptsId = await params.row.id;
         location.href = `/customers/points/editDelPoints/${ptsId}`
     }
