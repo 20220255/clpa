@@ -1,9 +1,7 @@
 'use client'
 
 import { AddRefId, getClerkId, updateClaimed } from "@/utils/actions"
-import { revalidatePath } from "next/cache"
 import { useRouter } from "next/navigation"
-// import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
 
@@ -19,7 +17,6 @@ const ClaimFreeWash = ({ refId }: { refId: string }): JSX.Element => {
             const { error } = await updateClaimed(refId, claimedDate)
             if (error) {
                 toast.error(error)
-                revalidatePath("/points")
             }
 
             const clerkId = (await getClerkId(refId))?.clerkId ?? ''
@@ -27,7 +24,6 @@ const ClaimFreeWash = ({ refId }: { refId: string }): JSX.Element => {
             const { addRefError } = await AddRefId(clerkId)
             if (addRefError) {
                 toast.error(addRefError)
-                revalidatePath("/points")
                 return
             }
             toast.success('Free Wash Claimed!')
@@ -37,15 +33,8 @@ const ClaimFreeWash = ({ refId }: { refId: string }): JSX.Element => {
         claimFreeWash()
     }, [refId, router])
 
-
-
     return (<></>)
 
-
-
-
-
 }
-
 
 export default ClaimFreeWash

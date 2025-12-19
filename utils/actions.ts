@@ -320,6 +320,7 @@ export const AddRefId = async (clerkId: string): Promise<AddReference> => {
                 userId: clerkId,
             }
         })
+        revalidatePath("/points")
         return { reference: ref }
     } catch (error) {
         return { addRefError: 'Something went wrong while adding Reference ID' }
@@ -338,6 +339,7 @@ export const updateClaimed = async (refId: string, claimedDate: string): Promise
                 claimedDate
             }
         })
+        revalidatePath("/points")
         return {}
     } catch (error) {
         return { error: 'Something went wrong while updating Reference ID' }
