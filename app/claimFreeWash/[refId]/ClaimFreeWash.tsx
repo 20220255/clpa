@@ -35,8 +35,7 @@ const ClaimFreeWash = ({ refId }: { refId: string }): JSX.Element => {
 
         }
         claimFreeWash()
-    }, []
-    )
+    }, [refId, router])
 
 
 

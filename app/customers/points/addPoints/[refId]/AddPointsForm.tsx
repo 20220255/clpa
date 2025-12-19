@@ -7,7 +7,7 @@ import { redirect, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { toast } from 'react-toastify'
 
-const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: string, totalPoints: number | undefined }) => {
+const AddPointsForm = ({ refId, totalPoints }: { refId: string, totalPoints: number | undefined }) => {
 
     const freeWashPoints = 8
     const [datePoints, setDatePoints] = useState('')
@@ -15,7 +15,7 @@ const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: st
     const [numDry, setNumDry] = useState(0)
     const [comment, setComment] = useState('')
     const [points, setPoints] = useState(0)
-    const [isFreeWash, setIsFreeWash] = useState(false)
+    const [isFreeWash] = useState(false)
 
     const formRef = useRef<HTMLFormElement>(null)
 

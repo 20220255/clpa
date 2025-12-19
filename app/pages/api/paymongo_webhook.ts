@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
 
 
-    
+
     console.log("===Webhook triggered=== Snapwash 3")
 
 
@@ -20,42 +20,42 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Create payment with database
     const amount = await data.attributes.data.attributes.amount
-    amount && console.log('amount: ', amount)
-    
+    if (amount) console.log('amount: ', amount)
+
     const email = await data.attributes.data.attributes.billing.email
-    email && console.log('email: ', email)
+    if (email) console.log('email: ', email)
 
     const name = await data.attributes.data.attributes.billing.name
-    name && console.log('name: ', name)
+    if (name) console.log('name: ', name)
 
     const phone = await data.attributes.data.attributes.billing.phone
-    phone && console.log('phone: ', phone)
+    if (phone) console.log('phone: ', phone)
 
     const currency = await data.attributes.data.attributes.currency
-    currency && console.log('currency: ', currency)
+    if (currency) console.log('currency: ', currency)
 
     const description = await data.attributes.data.attributes.description
-    description && console.log('description: ', description)
+    if (description) console.log('description: ', description)
 
     const fee = await data.attributes.data.attributes.fee
-    fee && console.log('fee: ', fee)
+    if (fee) console.log('fee: ', fee)
 
-      const net_amount = await data.attributes.data.attributes.net_amount
+    const net_amount = await data.attributes.data.attributes.net_amount
 
-      const type = await data.attributes.data.attributes.source.type
-      type && console.log('source: ', type)
+    const type = await data.attributes.data.attributes.source.type
+    if (type) console.log('source: ', type)
 
-      const status = await data.attributes.data.attributes.status
-      status && console.log('status: ', status)
-    
-      const payment_intent_id = await data.attributes.data.attributes.payment_intent_id
-      payment_intent_id && console.log('payment_intent_id: ', payment_intent_id)
+    const status = await data.attributes.data.attributes.status
+    if (status) console.log('status: ', status)
 
-      const statement_descriptor = await data.attributes.data.attributes.statement_descriptor
-      statement_descriptor && console.log('statement_descriptor: ', statement_descriptor)
+    const payment_intent_id = await data.attributes.data.attributes.payment_intent_id
+    if (payment_intent_id) console.log('payment_intent_id: ', payment_intent_id)
 
-      const userId = statement_descriptor.toString().slice(9)
-      userId && console.log('user ID: ', userId)
+    const statement_descriptor = await data.attributes.data.attributes.statement_descriptor
+    if (statement_descriptor) console.log('statement_descriptor: ', statement_descriptor)
+
+    const userId = statement_descriptor.toString().slice(9)
+    if (userId) console.log('user ID: ', userId)
 
     console.log('webhook data: ', req.body.data.attributes.data)
 
@@ -71,12 +71,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       type,
       status,
       payment_intent_id,
-      userId, 
+      userId,
     };
-    
-    const error = await createPayment({paymentData})
-    
-    console.log('error: ', error)  
+
+    const error = await createPayment({ paymentData })
+
+    console.log('error: ', error)
 
     console.log("===webhook end===")
 
