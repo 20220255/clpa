@@ -29,7 +29,8 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[] }) => {
             ? 'Free Wash'
             : points.numDry > 0
                 ? points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash'
-                : points.numWash + ' wash and dry ' || 'Free Wash', comments: points.comment
+                : points.numWash + ' wash and dry ' || 'Free Wash',
+        comments: points.comment
     }));
 
     const columns = [
