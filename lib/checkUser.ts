@@ -3,36 +3,39 @@ import { db } from "./db"
 
 
 export const checkUser = async () => {
-    // Check for current logged in clerk user
-    const user = await currentUser()
+    try {
+        // Check for current logged in clerk user
+        const user = await currentUser();
 
-    if (!user) {
-        return null
-    }
-
-    // Check if user is in the neon database
-    const loggedInUser = await db.user.findUnique({
-        where: {
-            clerkUserId: user.id
+        if (!user) {
+            return null;
         }
-    })
 
-    // If user is in the neon database, return the user
-    if (loggedInUser) {
-        return loggedInUser
+        const email = user.emailAddresses[0].emailAddress;
+
+        // Use upsert to handle potential race conditions
+        // This will update the user if they exist (by clerkUserId) or create them if they don't
+        return await db.user.upsert({
+            where: {
+                clerkUserId: user.id,
+            },
+            update: {
+                email: email,
+                firstName: user.firstName ?? '',
+                lastName: user.lastName,
+                imageUrl: user.imageUrl,
+            },
+            create: {
+                clerkUserId: user.id,
+                email: email,
+                firstName: user.firstName ?? '',
+                lastName: user.lastName,
+                imageUrl: user.imageUrl,
+                isAdmin: false,
+            },
+        });
+    } catch (error) {
+        console.error('checkUser error:', error);
+        return null;
     }
-
-    // If user is not in the neon database, create a new user
-    const newUser = await db.user.create({
-        data: {
-            clerkUserId: user.id,
-            email: user.emailAddresses[0].emailAddress,
-            firstName: user.firstName ?? '',
-            lastName: user.lastName,
-            imageUrl: user.imageUrl,
-            isAdmin: false
-        }
-    })
-
-    return newUser
-}
+};
