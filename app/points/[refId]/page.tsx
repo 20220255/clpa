@@ -3,17 +3,13 @@ import { getFName, getRefIdPoints, isClaimed } from "@/utils/actions"
 import RefIdPointsGrid from "./RefIdPointsGrid"
 import { Suspense } from "react"
 import Spinner from "@/components/shared/Spinner"
-import { PageProps } from "@/.next/types/app/page"
-
-
-interface RefPointsPageProps extends PageProps {
-    params: Awaited<PageProps['params']>;
+interface RefPointsPageProps {
+    params: Promise<{ refId: string }>;
 }
 
 const RefPointsPage = async ({ params }: RefPointsPageProps) => {
 
-    const refIdName = await params
-    const { refId } = refIdName
+    const { refId } = await params;
 
     // Get first name for a reference ID
     const { firstName } = await getFName(refId)
