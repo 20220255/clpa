@@ -7,7 +7,7 @@ import { Point } from "@prisma/client";
 
 
 
-const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
+const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[] }) => {
 
     if (refIdPoints?.length === 0) {
         return (
@@ -24,7 +24,12 @@ const RefIdPointsGrid = ({ refIdPoints }: { refIdPoints?: Point[]}) => {
         id: points.id,
         points: points.points,
         pointsDate: points.pointsDate,
-        numWashDry: points.freeWash ? 'Free Wash' : points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
+        // numWashDry: points.freeWash ? 'Free Wash' : points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash',
+        numWashDry: points.freeWash
+            ? 'Free Wash'
+            : points.numDry > 0
+                ? points.numWash + ' wash ' + points.numDry + ' dry' || 'Free Wash'
+                : points.numWash + ' wash and dry ' || 'Free Wash',
         comments: points.comment
     }));
 
