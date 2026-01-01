@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 import { nanoid } from "nanoid";
 
 
-export async function isRoleAdmin (): Promise<{error?: string | null}> {
+export async function isRoleAdmin(): Promise<{ error?: string | null }> {
 
     const clerkUserId = (await auth()).userId
 
@@ -21,28 +21,30 @@ export async function isRoleAdmin (): Promise<{error?: string | null}> {
             clerkUserId
         },
         select: {
-            role: true
+            role: true,
+            isAdmin: true
         }
     })
 
-    if (user?.role !== 'ADMIN') {
+    // Check both role and isAdmin fields for admin access
+    if (user?.role !== 'ADMIN' && user?.isAdmin !== true) {
         return { error: 'User not authorized' }
     }
-    
+
     return {}
 }
 
 
 // Get the clerk id for the logged in user
-export const getClerkIdLoggedIn = async (): Promise<{clerkId?: string, error?: string}> => {
+export const getClerkIdLoggedIn = async (): Promise<{ clerkId?: string, error?: string }> => {
 
     try {
-        const {userId} =  await auth()
+        const { userId } = await auth()
 
         if (!userId) {
-            return {error: 'User not found'}
+            return { error: 'User not found' }
         }
-        return {clerkId: userId}        
+        return { clerkId: userId }
     } catch (error) {
         return { error: 'Something went wrong while getting clerk ID' }
     }
@@ -52,7 +54,7 @@ export const getClerkIdLoggedIn = async (): Promise<{clerkId?: string, error?: s
 type GetCustomersResponse = {
     customers?: User[];
     error?: string;
-  };
+};
 
 /**
  * Retrieve all customers 
@@ -65,12 +67,12 @@ export const getCustomers = async (): Promise<GetCustomersResponse> => {
 
         const customers = await db.user.findMany({
             orderBy: {
-                createdAt:'desc'
+                createdAt: 'desc'
             }
         })
-        return {customers}        
+        return { customers }
     } catch (error) {
-        return { error: 'Something went wrong while retrieving customer list. PLease try again. ' }  
+        return { error: 'Something went wrong while retrieving customer list. PLease try again. ' }
     }
 }
 
@@ -78,7 +80,7 @@ export const getCustomers = async (): Promise<GetCustomersResponse> => {
 export type IsClaimedResponse = {
     isClaimedRef?: boolean;
     error?: string;
-};    
+};
 
 /**
  * Check if reference ID has been claimed
@@ -95,8 +97,8 @@ export const isClaimed = async (refId: string): Promise<IsClaimedResponse> => {
             select: {
                 claimed: true
             }
-        })  
-        return {isClaimedRef: ref?.claimed}
+        })
+        return { isClaimedRef: ref?.claimed }
     } catch (error) {
         return { error: 'Something went wrong while checking if Reference ID has been claimed' };
     }
@@ -106,8 +108,8 @@ export const isClaimed = async (refId: string): Promise<IsClaimedResponse> => {
 export type GetCustomersReFId = {
     reference?: Reference[];
     error?: string;
-  };
- 
+};
+
 /**
  * Retrieve customer's Ref IDs
  * @param userId 
@@ -115,24 +117,24 @@ export type GetCustomersReFId = {
  * 
  */
 export const getCustomerRefIds = async (userId: string): Promise<GetCustomersReFId> => {
-    
+
     try {
         const custRef = await db.reference.findMany({
             where: {
                 userId
             },
             orderBy: {
-                createdAt:'desc'
+                createdAt: 'desc'
             },
-    
+
         })
-        return {reference: custRef}        
+        return { reference: custRef }
     } catch (error) {
-        return { error: 'Something went wrong while getting Reference IDs' }  
+        return { error: 'Something went wrong while getting Reference IDs' }
     }
 
 
-}           
+}
 
 /**
  * Get user's first name
@@ -140,8 +142,8 @@ export const getCustomerRefIds = async (userId: string): Promise<GetCustomersReF
  * @returns {Promise<{firstName?: string, error?: string}>}
  * 
  */
-export const getFirstName = async (userId: string): Promise<{firstName?: string, error?: string}> => {
-    
+export const getFirstName = async (userId: string): Promise<{ firstName?: string, error?: string }> => {
+
     try {
         const user = await db.user.findUnique({
             where: {
@@ -151,12 +153,12 @@ export const getFirstName = async (userId: string): Promise<{firstName?: string,
                 firstName: true
             }
         })
-        return {firstName: user?.firstName || undefined}    
+        return { firstName: user?.firstName || undefined }
 
     } catch (error) {
-        return { error: 'Something went wrong while getting the first name' }  
+        return { error: 'Something went wrong while getting the first name' }
     }
-    
+
 }
 
 
@@ -164,25 +166,25 @@ export const getFirstName = async (userId: string): Promise<{firstName?: string,
 type GetRefIdPoints = {
     points?: Point[];
     error?: string;
-  };
+};
 
 /**
  * Get points detailsfor a reference ID
  * @param refId 
  * @returns {Promise<GetRefIdPoints>}
- */ 
+ */
 export const getRefIdPoints = async (refId: string): Promise<GetRefIdPoints> => {
-    
+
     try {
         const points = await db.point.findMany({
             where: {
                 referenceId: refId
             },
             orderBy: {
-                createdAt:'desc'
+                createdAt: 'desc'
             }
         })
-        return {points}        
+        return { points }
     } catch (error) {
         return { error: 'Something went wrong while getting your points' }
     }
@@ -194,15 +196,15 @@ type GetClerkId = {
     reference?: Reference[];
     error?: string;
     clerkId?: string;
-  };
- 
+};
+
 /**
  * Get clerkId based on Reference ID
  * @param refId 
  * @returns {Promise<GetClerkId>}
  */
 export const getClerkId = async (refId: string): Promise<GetClerkId> => {
-    
+
     try {
         const ref = await db.reference.findUnique({
             where: {
@@ -211,12 +213,12 @@ export const getClerkId = async (refId: string): Promise<GetClerkId> => {
             select: {
                 userId: true
             }
-        })  
-        return {clerkId: ref?.userId}        
+        })
+        return { clerkId: ref?.userId }
     } catch (error) {
         return { error: 'Something went wrong while getting User ID' }
     }
-    
+
 
 }
 
@@ -232,7 +234,7 @@ interface PointType {
 interface TransactionResult {
     data?: PointType;
     error?: string;
-}  
+}
 
 /**
  * Add points to a reference ID
@@ -241,10 +243,10 @@ interface TransactionResult {
  * @param clerkId
  * @returns {Promise<TransactionResult>}
  */
-export const addPoints = async ({formData, refId, clerkId}: {formData: FormData, refId: string, clerkId: string}): Promise<TransactionResult> => {
+export const addPoints = async ({ formData, refId, clerkId }: { formData: FormData, refId: string, clerkId: string }): Promise<TransactionResult> => {
 
     // Get logged in user
-    const {userId} =  await auth()
+    const { userId } = await auth()
 
     // Check for user
     if (!userId) {
@@ -276,7 +278,7 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
                 points,
                 referenceId: refId,
                 userId: clerkId,
-                comment: comment ?? undefined ?? null ?? '',
+                comment: comment ?? '',
                 pointsDate,
                 numWash: parseInt(numWash),
                 numDry: parseInt(numDry),
@@ -286,12 +288,12 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
 
         revalidatePath(`/customers/points/addPoints/${refId}`)
 
-        return {data: pointsAdded}        
-    
+        return { data: pointsAdded }
+
     } catch (error) {
 
         return { error: 'Error adding points' }
-    
+
     }
 }
 
@@ -299,15 +301,15 @@ export const addPoints = async ({formData, refId, clerkId}: {formData: FormData,
 type AddReference = {
     reference?: Reference;
     addRefError?: string;
- };
+};
 
- /**
- * Add reference details to the database
- * @param clerkId 
- * @returns {Promise<AddReference>}
- */ 
+/**
+* Add reference details to the database
+* @param clerkId 
+* @returns {Promise<AddReference>}
+*/
 
-export const AddRefId = async (clerkId: string ): Promise<AddReference> => {
+export const AddRefId = async (clerkId: string): Promise<AddReference> => {
     try {
 
         const refId = await nanoid(8);
@@ -318,14 +320,15 @@ export const AddRefId = async (clerkId: string ): Promise<AddReference> => {
                 userId: clerkId,
             }
         })
-        return {reference: ref}        
+        revalidatePath("/points")
+        return { reference: ref }
     } catch (error) {
         return { addRefError: 'Something went wrong while adding Reference ID' }
     }
 }
 
 // Update claimed in Reference table to true
-export const updateClaimed = async (refId: string, claimedDate: string): Promise<{error?: string}> => {
+export const updateClaimed = async (refId: string, claimedDate: string): Promise<{ error?: string }> => {
     try {
         await db.reference.update({
             where: {
@@ -336,6 +339,7 @@ export const updateClaimed = async (refId: string, claimedDate: string): Promise
                 claimedDate
             }
         })
+        revalidatePath("/points")
         return {}
     } catch (error) {
         return { error: 'Something went wrong while updating Reference ID' }
@@ -377,7 +381,7 @@ export const getPoint = async (pointId: string): Promise<PointResponse> => {
                 referenceId: true
             }
         })
-        return {pointDetails: pointDetails!}
+        return { pointDetails: pointDetails! }
     } catch (error) {
         return { error: 'Something went wrong while getting point details' }
     }
@@ -408,7 +412,7 @@ interface UpdatePointResponse {
  * @returns {Promise<{point?: Point, error?: string}>}
  */
 export const updatePoint = async (pointId: string, formData: FormData): Promise<UpdatePointResponse> => {
-    
+
     try {
         const comment = formData.get('comment') as string || undefined;
         const numWash = formData.get('numWash') as string || undefined;
@@ -430,15 +434,15 @@ export const updatePoint = async (pointId: string, formData: FormData): Promise<
                 id: pointId
             },
             data: {
-                comment: comment ?? undefined ?? null ?? '',
+                comment: comment ?? '',
                 numWash: parseInt(numWash),
                 numDry: parseInt(numDry),
                 pointsDate,
                 freeWash: freeWash === 'on' ? true : false,
                 points
             }
-        })        
-        return {pointDetails: pointDetails}
+        })
+        return { pointDetails: pointDetails }
     } catch (error) {
         return { error: 'Something went wrong while updating point details' }
     }
@@ -450,7 +454,7 @@ export const updatePoint = async (pointId: string, formData: FormData): Promise<
  * @param pointId 
  * @returns {Promise<{point?: Point, error?: string}>}
  */
-export const deletePoint = async (pointId: string): Promise<{error?: string}> => {
+export const deletePoint = async (pointId: string): Promise<{ error?: string }> => {
     try {
         await db.point.delete({
             where: {
@@ -468,7 +472,7 @@ export const deletePoint = async (pointId: string): Promise<{error?: string}> =>
  * @param refId 
  * @returns {Promise<{firstName?: string, error?: string}>}
  */
-export const getFName = async (refId: string): Promise<{firstName?: string, error?: string}> => {
+export const getFName = async (refId: string): Promise<{ firstName?: string, error?: string }> => {
     try {
         const firstName = await db.reference.findUnique({
             where: {
@@ -487,22 +491,22 @@ export const getFName = async (refId: string): Promise<{firstName?: string, erro
                 firstName: true
             }
         })
-        return {firstName: user?.firstName ?? undefined}
+        return { firstName: user?.firstName ?? undefined }
     } catch (error) {
-        return { error: 'Something went wrong while getting first name' }   
-    } 
+        return { error: 'Something went wrong while getting first name' }
+    }
 }
 
 /**
  * Get the user's total points from the latest reference ID
  * @returns {Promise<{points?: number, error?: string}>}
  */
-export const getUserLatestRefPoints = async (): Promise<{points?: number, error?: string, refId?: string}> => {
+export const getUserLatestRefPoints = async (): Promise<{ points?: number, error?: string, refId?: string }> => {
     try {
-        const {userId} =  await auth()
+        const { userId } = await auth()
 
         if (!userId) {
-            return {error: 'User not found'}
+            return { error: 'User not found' }
         }
 
         // Get latest reference ID
@@ -519,7 +523,7 @@ export const getUserLatestRefPoints = async (): Promise<{points?: number, error?
         })
 
         if (!reference) {
-            return {error: 'Reference ID not found'}
+            return { error: 'Reference ID not found' }
         }
         const refId = reference.refId
 
@@ -535,10 +539,10 @@ export const getUserLatestRefPoints = async (): Promise<{points?: number, error?
                 points: true
             }
         })
-        return {points: points.reduce((a, b) => a + b.points, 0)}
+        return { points: points.reduce((a, b) => a + b.points, 0) }
     } catch (error) {
-        return { error: 'Something went wrong while getting points' }   
-    } 
+        return { error: 'Something went wrong while getting points' }
+    }
 }
 
 
@@ -546,12 +550,12 @@ export const getUserLatestRefPoints = async (): Promise<{points?: number, error?
  * Get the logged in user's latest reference ID and clerk ID
  * @returns {Promise<{refId?: string, error?: string}>}
  */
-export const getLatestRefId = async (): Promise<{refId?: string, clerkId?: string,  error?: string}> => {
+export const getLatestRefId = async (): Promise<{ refId?: string, clerkId?: string, error?: string }> => {
     try {
-        const {userId} =  await auth()
+        const { userId } = await auth()
 
         if (!userId) {
-            return {error: 'User not found'}
+            return { error: 'User not found' }
         }
 
         // Get the user's clerk ID
@@ -578,44 +582,57 @@ export const getLatestRefId = async (): Promise<{refId?: string, clerkId?: strin
         })
 
         if (!reference) {
-            return {error: 'Reference ID not found'}
+            return { error: 'Reference ID not found' }
         }
-        return {refId: reference.refId, clerkId: clerkUserId?.clerkUserId}
+        return { refId: reference.refId, clerkId: clerkUserId?.clerkUserId }
     } catch (error) {
         return { error: 'Something went wrong while getting reference ID' }
-    }   
+    }
 }
 
 /**
  * Is user admin
  * @returns {Promise<{isAdmin?: boolean, error?: string}>}
  */
-export const isAdmin = async (): Promise<{isRoleAdmin?: boolean, error?: string}> => {
+export const isAdmin = async (): Promise<{ isRoleAdmin?: boolean, error?: string }> => {
     try {
-        const {userId} =  await auth()
+        const { userId } = await auth()
+
+        if (!userId) {
+            return { isRoleAdmin: false }
+        }
 
         const user = await db.user.findUnique({
             where: {
-                clerkUserId: userId || ''
+                clerkUserId: userId
             },
             select: {
                 clerkUserId: true,
-                isAdmin: true
+                isAdmin: true,
+                role: true
             }
         })
 
+        // Check isAdmin field OR role === 'ADMIN' OR clerkId matches env admin IDs
+        const isAdminByField = user?.isAdmin === true;
+        const isAdminByRole = user?.role === 'ADMIN';
+        const isAdminByEnv =
+            userId === process.env.ADMIN_CLERK_ID ||
+            userId === process.env.ADMIN_CLERK_ID2 ||
+            userId === process.env.ADMIN_CLERK_ID3 ||
+            userId === process.env.ADMIN_CLERK_ID4 ||
+            userId === process.env.ADMIN_CLERK_ID5;
+
+        console.log('isAdmin check:', { userId, isAdminByField, isAdminByRole, isAdminByEnv });
+
         return {
-            isRoleAdmin: user?.isAdmin
-            // user?.clerkUserId === process.env.ADMIN_CLERK_ID || 
-            // user?.clerkUserId === process.env.ADMIN_CLERK_ID2 || 
-            // user?.clerkUserId === process.env.ADMIN_CLERK_ID3 || 
-            // user?.clerkUserId === process.env.ADMIN_CLERK_ID4 || 
-            // user?.clerkUserId === process.env.ADMIN_CLERK_ID5 
+            isRoleAdmin: isAdminByField || isAdminByRole || isAdminByEnv
         }
     } catch (error) {
+        console.error('isAdmin error:', error);
         return { error: 'Something went wrong while checking if user is admin' }
     }
-        
+
 }
 
 export type UserTotalPoints = {
@@ -623,7 +640,7 @@ export type UserTotalPoints = {
 }
 
 type GetCustomersResponseTotalPoints = {
-    customersTotalPoints?: UserTotalPoints [],
+    customersTotalPoints?: UserTotalPoints[],
     error?: string
 }
 
@@ -637,7 +654,7 @@ export const getCustomersTotalPoints = async (): Promise<GetCustomersResponseTot
         // Retrieve all customers
         const customers = await db.user.findMany({
             orderBy: {
-                createdAt:'desc'
+                createdAt: 'desc'
             },
             include: {
                 referenceIds: {
@@ -665,19 +682,19 @@ export const getCustomersTotalPoints = async (): Promise<GetCustomersResponseTot
 
 
 
-interface PaymentData{
-    amount:           number;
-    email?:            string;
-    name?:              string;
-    phone?:             string;
-    currency:          string;
-    description?:       string;
-    fee:               number;
-    net_amount:        number;
+interface PaymentData {
+    amount: number;
+    email?: string;
+    name?: string;
+    phone?: string;
+    currency: string;
+    description?: string;
+    fee: number;
+    net_amount: number;
     payment_intent_id: string;
-    type:              string;
-    status:            string;
-    userId:            string;
+    type: string;
+    status: string;
+    userId: string;
 }
 
 interface PaymentResult {
@@ -685,28 +702,28 @@ interface PaymentResult {
     error?: string;
 }
 
-async function createPayment ({paymentData}: {paymentData: PaymentData}): Promise<PaymentResult | null> {
+async function createPayment({ paymentData }: { paymentData: PaymentData }): Promise<PaymentResult | null> {
 
     try {
         const payment = await db.payment.create({
             data: {
-                amount:           paymentData.amount/100,
-                email:            paymentData.email,
-                name:             paymentData.name,
-                phone:            paymentData.phone,
-                currency:         paymentData.currency,
-                description:      paymentData.description,
-                fee:              paymentData.fee/100,
-                net_amount:       paymentData.net_amount/100,
-                payment_intent_id:paymentData.payment_intent_id,
-                type:             paymentData.type,
-                status:           paymentData.status,
-                userId:           paymentData.userId
+                amount: paymentData.amount / 100,
+                email: paymentData.email,
+                name: paymentData.name,
+                phone: paymentData.phone,
+                currency: paymentData.currency,
+                description: paymentData.description,
+                fee: paymentData.fee / 100,
+                net_amount: paymentData.net_amount / 100,
+                payment_intent_id: paymentData.payment_intent_id,
+                type: paymentData.type,
+                status: paymentData.status,
+                userId: paymentData.userId
             }
         })
         return null
     } catch (error) {
-        return { error: 'Something went wrong while creating payment: ' + error }      
+        return { error: 'Something went wrong while creating payment: ' + error }
     }
 
 
@@ -719,14 +736,14 @@ export default createPayment
  * @returns {Promise<{totalCustomers?: number, error?: string}>}
  */
 
-export const getTotalRegisteredCustomers = async (): Promise<{totalCustomers?: number, error?: string}> => {
+export const getTotalRegisteredCustomers = async (): Promise<{ totalCustomers?: number, error?: string }> => {
     try {
 
         // Is logged in user admin
-        const {error} = await isRoleAdmin()
+        const { error } = await isRoleAdmin()
 
         if (error) {
-            return {error}
+            return { error }
         }
 
         // get the total number of registered customers where isAdmin is false
@@ -735,7 +752,7 @@ export const getTotalRegisteredCustomers = async (): Promise<{totalCustomers?: n
                 isAdmin: false
             }
         })
-        return {totalCustomers}
+        return { totalCustomers }
     } catch (error) {
         return { error: 'Something went wrong while getting the total number of registered customers' }
     }

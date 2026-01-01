@@ -1,7 +1,7 @@
 import { getPoint, getRefIdPoints } from "@/utils/actions";
 import EditDelForm from "./EditDelForm"
 import { PageProps } from "@/.next/types/app/page";
-const _ = require('lodash');
+
 
 
 interface EditDelPageProps extends PageProps {

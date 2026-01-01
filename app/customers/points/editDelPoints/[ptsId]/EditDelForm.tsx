@@ -10,13 +10,8 @@ import { toast } from "react-toastify"
 const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointResponse, totalPoints?: number }) => {
 
   const { pointDetails, error } = pointReqDetails
-
-  if (error) {
-    toast.error(error)
-    return null
-  }
-
   const freeWashPoints = 8
+
   const [datePoints, setDatePoints] = useState(pointDetails?.pointsDate)
   const [numWash, setNumWash] = useState(pointDetails?.numWash)
   const [numDry, setNumDry] = useState(pointDetails?.numDry)
@@ -27,15 +22,22 @@ const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointR
   const [ptsId] = useState(pointDetails?.id)
 
   const formRef = useRef<HTMLFormElement>(null)
+  const router = useRouter();
 
   useEffect(() => {
-    // if (!numDry || !numWash) return
-    // removed the line because numDry is hidden and point system has changed
+    if (error) {
+      toast.error(error)
+    }
+  }, [error])
+
+  useEffect(() => {
     if (!numWash) return
     setPoints(numWash)
   }, [numWash, numDry])
 
-  const router = useRouter();
+  if (error) {
+    return null
+  }
   const handleGoBack = () => {
     router.back();
   };

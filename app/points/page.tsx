@@ -1,29 +1,31 @@
-import Spinner from "@/components/shared/Spinner";
 import { getFirstName, getLatestRefId } from "@/utils/actions"
-import { useAuth } from "@clerk/nextjs";
-import { Suspense } from "react";
-import PointsAnimation from "./PointsAnimation";
 import { auth } from "@clerk/nextjs/server";
-
+import PointsClientWrapper from "./PointsClientWrapper";
+import { redirect } from "next/navigation";
 
 const PointsPage = async () => {
 
   const { userId } = await auth();
 
+  // Redirect to home if not authenticated
+  if (!userId) {
+    redirect('/');
+  }
+
   // Get customer first name
-  const {firstName, error} = await getFirstName(userId!);
-  
+  const { firstName } = await getFirstName(userId);
 
   // Get Clerk ID and latest Reference ID
-  const { refId, error : latestRefIdError } = await getLatestRefId();
-
-
+  const { refId, error: latestRefIdError } = await getLatestRefId();
 
   return (
-    <Suspense fallback={<Spinner />}>
-      <PointsAnimation firstName={firstName || ''} refId={refId || ''} latestRefIdError={latestRefIdError || ''} />
-    </Suspense>
+    <PointsClientWrapper
+      firstName={firstName || ''}
+      refId={refId || ''}
+      latestRefIdError={latestRefIdError || ''}
+    />
   )
 }
 
 export default PointsPage
+

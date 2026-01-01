@@ -1,35 +1,52 @@
 'use client'
 
-import React from "react";
-import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
-import { Container, Typography } from "@mui/material";
-import { Reference } from "@prisma/client";
+import React, { useState, useEffect } from "react";
+import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton, GridRowParams } from "@mui/x-data-grid";
+import { Typography } from "@mui/material";
 import { useParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { GetCustomersReFId } from '@/utils/actions'
 
 
-const CustomerRefGrid = ({ reference, errorFN, fName }: { reference?: GetCustomersReFId, errorFN?: string, fName?: string }) => {
+const CustomerRefGrid = ({ reference, errorFN }: { reference?: GetCustomersReFId, errorFN?: string }) => {
+
+    const [mounted, setMounted] = useState(false);
+    const userId = useParams();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (mounted) {
+            if (reference?.error) {
+                toast.error('Error retrieving Customer Reference ID');
+            }
+            if (!errorFN) {
+                toast.error('Error getting customer name');
+            }
+        }
+    }, [mounted, reference?.error, errorFN]);
+
+    if (!mounted) {
+        return (
+            <div className="flex items-center justify-center h-96">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
 
     if (!reference?.reference || reference?.reference.length < 1) {
         return (
-            <div>
-                <h1 className="mt-28 text-2xl font-bold dark:text-blue-200">No Refernce ID to show.</h1>{" "}
+            <div className="p-8 text-center">
+                <h1 className="text-xl font-bold text-slate-600 dark:text-blue-200">No Reference ID to show.</h1>
             </div>
         )
     }
 
-    if (reference?.error) {
-        toast.error('Error retrieving Customer Reference ID');
-        return
+    if (reference?.error || !errorFN) {
+        return null;
     }
-
-    if (!errorFN) {
-        toast.error('Error getting customer name');
-        return
-    }
-
-    const userId = useParams()
 
     const rows = reference?.reference.map((refIds) => ({
         id: refIds.id,
@@ -44,9 +61,12 @@ const CustomerRefGrid = ({ reference, errorFN, fName }: { reference?: GetCustome
         { field: "claimedDate", width: 350, renderHeader: () => <Typography sx={{ color: 'darkblue' }}>{'Date Claimed'}</Typography>, },
     ];
 
-    const handleRowClick = async (params: any) => {
-        const refId = await params.row.refId;
-        location.href = `/customers/${userId}/${refId}`
+    const handleRowClick = (params: GridRowParams) => {
+        const refId = params.row.refId;
+        const id = userId?.id;
+        if (id && refId) {
+            location.href = `/customers/${id}/${refId}`
+        }
     }
 
     const CustomToolbar = () => {
@@ -63,24 +83,37 @@ const CustomerRefGrid = ({ reference, errorFN, fName }: { reference?: GetCustome
         )
     }
     return (
-        <Container style={{ height: 400, width: '110%', marginLeft: '-5%', }} >
+        <div style={{ height: 450, width: '100%' }}>
             <DataGrid
                 rows={rows}
                 columns={columns}
-                pageSizeOptions={[5, 10, 100]}
+                pageSizeOptions={[5, 10, 25, 50, 100]}
                 density='standard'
                 slots={{
                     toolbar: CustomToolbar,
                 }}
                 initialState={{
                     pagination: {
-                        paginationModel: { pageSize: 5, page: 0 },
+                        paginationModel: { pageSize: 10, page: 0 },
                     },
                 }}
                 onRowClick={handleRowClick}
-                className="dark:text-white dark:bg-blue-900 diplay: flex justify-center"
+                className="dark:text-white dark:bg-slate-800"
+                sx={{
+                    border: 'none',
+                    '& .MuiDataGrid-cell': {
+                        borderBottom: '1px solid rgba(224, 224, 224, 0.3)',
+                    },
+                    '& .MuiDataGrid-columnHeaders': {
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                        backgroundColor: 'rgba(59, 130, 246, 0.05)',
+                        cursor: 'pointer',
+                    },
+                }}
             />
-        </Container>
+        </div>
     );
 }
 

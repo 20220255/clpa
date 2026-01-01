@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 const ModalPage = async () => {
 
     // const router = useRouter();
-    const {userId} = await auth();
+    const { userId } = await auth();
 
     // Search for Ref ID in the User table, if not found, move to Home page
     if (!userId) {
@@ -19,8 +19,8 @@ const ModalPage = async () => {
 
     // Search for Ref ID in the Reference table. If found, move to Home page
     // This means the user already has a Ref ID and has already signed up
-    const {reference}  = await getCustomerRefIds(userId)
-    if (reference!.length > 0) {
+    const { reference } = await getCustomerRefIds(userId)
+    if (reference && reference.length > 0) {
         redirect('/')
     }
 

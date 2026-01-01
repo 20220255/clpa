@@ -7,11 +7,11 @@ import Spinner from "@/components/shared/Spinner"
 import { Button } from "@mui/material"
 import Link from "next/link"
 import { PageProps } from "@/.next/types/app/page"
-const _ = require('lodash');
+
 
 interface RefPointsPageProps extends PageProps {
     params: Awaited<PageProps['params']>;
-  }
+}
 
 const RefPointsPage = async ({ params }: RefPointsPageProps) => {
 
@@ -20,7 +20,7 @@ const RefPointsPage = async ({ params }: RefPointsPageProps) => {
     const {refId} = refIdName
 
     // Get first name for a reference ID
-    const {firstName} = await getFName(refId)
+    const { firstName } = await getFName(refId)
 
     // Needed for BreadCrumbs
     const clerkId = await getClerkId(refId)
@@ -35,8 +35,8 @@ const RefPointsPage = async ({ params }: RefPointsPageProps) => {
     // If free wash isClaimed, don't show the add points button
     const { isClaimedRef, error } = await isClaimed(refId)
     if (error) {
-        alert(error)
-        return
+        console.error(error)
+        return <div className="p-8 text-center text-red-500">{error}</div>
     }
     // TODO: TBD - Edit and delete should not be accessible if ref isClaimed 
     return (
@@ -48,13 +48,13 @@ const RefPointsPage = async ({ params }: RefPointsPageProps) => {
                 <h1 className="text-xl font-bold dark:text-blue-200">{`POINTS: ${totalPoints}`}</h1>
                 {(!isClaimedRef && totalPoints! < freeWashPoints) ? (
                     <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
-                        <Link style={{color: 'white'}} href={`/customers/points/addPoints/${refId}~${firstName}`}>Add Points</Link>
+                        <Link style={{ color: 'white' }} href={`/customers/points/addPoints/${refId}~${firstName}`}>Add Points</Link>
                     </Button>
                 ) : (totalPoints === freeWashPoints && !isClaimedRef) &&
-                    <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
-                        <Link style={{color: 'white'}} href={`/claimFreeWash/${refId}`}>Free Wash</Link>
-                    </Button>
-                 }
+                <Button variant="contained" size="small" className=" dark:text-white dark:bg-blue-300 mb-2">
+                    <Link style={{ color: 'white' }} href={`/claimFreeWash/${refId}`}>Free Wash</Link>
+                </Button>
+                }
             </div>
             <BreadCrumbs clerkId={userId || ''} />
             <Suspense fallback={<Spinner />}>
