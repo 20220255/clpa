@@ -1,6 +1,4 @@
-import Spinner from "@/components/shared/Spinner";
 import { getFirstName, getLatestRefId } from "@/utils/actions"
-import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import PointsClientWrapper from "./PointsClientWrapper";
 import { redirect } from "next/navigation";
@@ -21,14 +19,13 @@ const PointsPage = async () => {
   const { refId, error: latestRefIdError } = await getLatestRefId();
 
   return (
-    <Suspense fallback={<Spinner />}>
-      <PointsClientWrapper
-        firstName={firstName || ''}
-        refId={refId || ''}
-        latestRefIdError={latestRefIdError || ''}
-      />
-    </Suspense>
+    <PointsClientWrapper
+      firstName={firstName || ''}
+      refId={refId || ''}
+      latestRefIdError={latestRefIdError || ''}
+    />
   )
 }
 
 export default PointsPage
+
