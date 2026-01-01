@@ -22,7 +22,7 @@ const PointsAnimation
         // Get the first name of the logged in user
         // const { userId } = useAuth();
 
-        const maxPoints = 8
+        const maxPoints = 10
         const canvasRef = useRef();
         const confettiRef = useRef<JSConfetti | null>(null);
 
@@ -30,16 +30,16 @@ const PointsAnimation
         const [initialRender, setinitialRender] = useState(true);
 
         const handlePointsClaimed = async (points: number): Promise<void> => {
-            // limit points to 8
-            if (points >= 8) {
-                points = 8;
+            // limit points to 10
+            if (points >= 10) {
+                points = 10;
             }
 
             // animate circle points
             await animatePoints(points, maxPoints);
 
-            // show confetti if points >= 8 whether free wash is claimed or not
-            if (points >= 8) {
+            // show confetti if points >= 10 whether free wash is claimed or not
+            if (points >= 10) {
                 confettiRef.current = new JSConfetti({ canvas: canvasRef.current });
                 confettiRef.current.addConfetti({
                     confettiRadius: 5,
@@ -94,7 +94,7 @@ const PointsAnimation
                                     : uncompletedText
                         }
                         <Suspense fallback={<div>Loading...</div>}>
-                            <PointsCircles maxPoints={8} />
+                            <PointsCircles maxPoints={10} />
                         </Suspense>
                         <div className="dark:text-gray-100">
                             <Link className="underline dark:text-gray-100" href={`/points/${refId}`}>{`${refId} `}</Link>

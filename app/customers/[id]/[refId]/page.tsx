@@ -16,7 +16,7 @@ interface RefPointsPageProps extends PageProps {
 const RefPointsPage = async ({ params }: RefPointsPageProps) => {
 
     const refIdName = await params
-    const freeWashPoints = 8
+    const freeWashPoints = 10
     const {refId} = refIdName
 
     // Get first name for a reference ID
