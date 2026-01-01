@@ -15,7 +15,7 @@ import Card from "@/components/shared/card/Card"
 
 const PointsAnimation = ({ firstName, refId, latestRefIdError }: { firstName: string | null, refId: string | null, latestRefIdError: string | null }) => {
 
-    const maxPoints = 8
+    const maxPoints = 10
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const confettiRef = useRef<JSConfetti | null>(null);
 
@@ -37,15 +37,15 @@ const PointsAnimation = ({ firstName, refId, latestRefIdError }: { firstName: st
     }
 
     const handlePointsClaimed = async (points: number): Promise<void> => {
-        if (points >= 8) {
-            points = 8;
+        if (points >= 10) {
+            points = 10;
         }
 
         // animate circle points
         await animatePoints(points, maxPoints);
 
-        // show confetti if points >= 8 whether free wash is claimed or not
-        if (points >= 8) {
+        // show confetti if points >= 10 whether free wash is claimed or not
+        if (points >= 10) {
             confettiRef.current = new JSConfetti({ canvas: canvasRef.current! });
             confettiRef.current.addConfetti({
                 confettiRadius: 5,
@@ -106,7 +106,7 @@ const PointsAnimation = ({ firstName, refId, latestRefIdError }: { firstName: st
                                 : uncompletedText
                     }
                     <Suspense fallback={<div>Loading...</div>}>
-                        <PointsCircles maxPoints={8} />
+                        <PointsCircles maxPoints={10} />
                     </Suspense>
                     <div className="dark:text-gray-100">
                         <Link className="underline dark:text-gray-100" href={`/points/${refId}`}>{`${refId} `}</Link>
@@ -151,8 +151,8 @@ const PointsAnimation = ({ firstName, refId, latestRefIdError }: { firstName: st
                         How it works
                     </h3>
                     <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-                        <li>• Earn <strong>1 point</strong> for every wash</li>
-                        <li>• Collect <strong>8 points</strong> to get a <strong className="text-blue-600 dark:text-cyan-400">FREE wash!</strong></li>
+                        <li>• Earn <strong>1 point</strong> for every wash and dry</li>
+                        <li>• Collect <strong>10 points</strong> to get a <strong className="text-blue-600 dark:text-cyan-400">FREE wash!</strong></li>
                         <li>• Points never expire</li>
                     </ul>
                 </div>
