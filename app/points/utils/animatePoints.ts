@@ -1,5 +1,5 @@
 
-const animatePoints = async (points: number, maxPoints = 8) => {
+const animatePoints = async(points: number, maxPoints = 10) => {
 
   function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));

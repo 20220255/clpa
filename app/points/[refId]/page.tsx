@@ -9,7 +9,8 @@ interface RefPointsPageProps {
 
 const RefPointsPage = async ({ params }: RefPointsPageProps) => {
 
-    const { refId } = await params;
+    const refIdName = await params
+    const {refId} = refIdName
 
     // Get first name for a reference ID
     const { firstName } = await getFName(refId)
