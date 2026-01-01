@@ -28,7 +28,7 @@ const ClaimFreeWash = ({ refId }: { refId: string }): JSX.Element => {
             const { addRefError } = await AddRefId(clerkId)
             if (addRefError) {
                 toast.error(addRefError)
-                refreshPoints
+                await refreshPoints()
                 // revalidatePath("/points")
                 return
             }

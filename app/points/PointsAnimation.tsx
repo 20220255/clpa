@@ -18,7 +18,7 @@ const PointsAnimation = ({ firstName, refId, latestRefIdError }: { firstName: st
     const confettiRef = useRef<JSConfetti | null>(null);
 
     const [pointsLeft, setPointsLeft] = useState<number | null>(null)
-    const [currentPoints, setCurrentPoints] = useState<number | null>(null)
+    const [, setCurrentPoints] = useState<number | null>(null)
     const [initialRender, setinitialRender] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
