@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 
 const AddPointsForm = ({ refId, fName, totalPoints }: { refId: string, fName: string, totalPoints: number | undefined }) => {
 
-    const freeWashPoints = 8
+    const freeWashPoints = 10
     const [datePoints, setDatePoints] = useState('')
     const [numWash, setNumWash] = useState(0)
     const [numDry, setNumDry] = useState(0)
