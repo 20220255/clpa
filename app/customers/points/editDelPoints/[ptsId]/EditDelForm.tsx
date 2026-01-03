@@ -16,7 +16,7 @@ const EditDelForm = ({ pointReqDetails, totalPoints }: { pointReqDetails: PointR
     return null
   }
 
-  const freeWashPoints = 8
+  const freeWashPoints = 10
   const [datePoints, setDatePoints] = useState(pointDetails?.pointsDate)
   const [numWash, setNumWash] = useState(pointDetails?.numWash)
   const [numDry, setNumDry] = useState(pointDetails?.numDry)
